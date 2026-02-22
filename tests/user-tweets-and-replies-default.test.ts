@@ -18,14 +18,14 @@ describe('userTweetsAndReplies defaults', () => {
 
   it('builds a request from defaults and required userId', () => {
     const request = buildUserTweetsAndRepliesRequest({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(request.operationName).toBe(DEFAULT_USER_TWEETS_AND_REPLIES_OPERATION_NAME);
     expect(request.queryId).toBe(DEFAULT_USER_TWEETS_AND_REPLIES_QUERY_ID);
     expect(request.variables).toEqual({
       ...DEFAULT_USER_TWEETS_AND_REPLIES_VARIABLES,
-      userId: '1882474049324081152'
+      userId: '42'
     });
     expect(request.features).toEqual(DEFAULT_USER_TWEETS_AND_REPLIES_FEATURES);
     expect(request.fieldToggles).toEqual(DEFAULT_USER_TWEETS_AND_REPLIES_FIELD_TOGGLES);
@@ -71,10 +71,10 @@ describe('userTweetsAndReplies defaults', () => {
 
   it('uses self userId from twid cookie when input userId is omitted', () => {
     vi.stubGlobal('document', {
-      cookie: 'twid=u%3D1882474049324081152'
+      cookie: 'twid=u%3D42'
     });
 
     const request = buildUserTweetsAndRepliesRequest();
-    expect(request.variables.userId).toBe('1882474049324081152');
+    expect(request.variables.userId).toBe('42');
   });
 });

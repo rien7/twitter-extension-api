@@ -90,7 +90,7 @@ describe('followList response normalization', () => {
     );
 
     const response = await followList({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(response.instructions).toHaveLength(1);

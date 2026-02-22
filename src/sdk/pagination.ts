@@ -1,5 +1,4 @@
 import type {
-  XApiDesc,
   XApiPaginationDesc,
   XCallableApi,
   XCursorCollectResult,
@@ -17,7 +16,7 @@ export async function* paginateCursorApi<
   input: I,
   options: XCursorPaginateOptions<O> = {}
 ): AsyncGenerator<XCursorPaginateStep<O>, void, void> {
-  const pagination = getCursorPaginationDesc(api.__desc);
+  const pagination = getCursorPaginationDesc(api);
   const direction = options.direction ?? 'next';
   const maxPages = options.maxPages ?? Infinity;
   const maxItems = options.maxItems ?? Infinity;
@@ -123,7 +122,7 @@ export async function collectCursorPages<
 
   if (pages.length > 0) {
     const lastPage = pages[pages.length - 1] as Record<string, unknown>;
-    const pagination = getCursorPaginationDesc(api.__desc);
+    const pagination = getCursorPaginationDesc(api);
     const hasMore = readHasMore(
       lastPage,
       pagination,
@@ -143,11 +142,13 @@ export async function collectCursorPages<
   };
 }
 
-function getCursorPaginationDesc(desc: XApiDesc): XApiPaginationDesc {
-  if (!desc.pagination || desc.pagination.strategy !== 'cursor') {
-    throw new Error(`API "${desc.id}" does not define cursor pagination metadata in __desc.pagination.`);
+function getCursorPaginationDesc<I, O>(api: XCallableApi<I, O>): XApiPaginationDesc {
+  if (!api.__meta.pagination || api.__meta.pagination.strategy !== 'cursor') {
+    throw new Error(
+      `API "${api.__meta.id}" does not define cursor pagination metadata in __meta.pagination.`
+    );
   }
-  return desc.pagination;
+  return api.__meta.pagination;
 }
 
 function resolveRequestedCount(

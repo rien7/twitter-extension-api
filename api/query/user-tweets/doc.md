@@ -88,7 +88,7 @@ const response = await userTweets({
 import { userTweets } from '../api';
 
 const response = await userTweets({
-  userId: '1882474049324081152',
+  userId: '42',
   cursor: 'cursor-bottom-token',
   count: 40,
   withQuickPromoteEligibilityTweetFields: false,

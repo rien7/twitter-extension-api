@@ -36,18 +36,19 @@ export interface XApiPaginationDesc {
   maxCount?: number;
 }
 
-export interface XApiDesc {
+export interface XApiMeta {
   id: string;
   title: string;
-  doc: string;
   match: XApiMatchRule;
   requestTypeName: string;
   responseTypeName: string;
   pagination?: XApiPaginationDesc;
 }
 
-export type XCallableApi<I = unknown, O = unknown> = ((input: I) => Promise<O>) & {
-  __desc: XApiDesc;
+export type XCallableApi<I = unknown, O = unknown, D = unknown> = ((input?: I) => Promise<O>) & {
+  __desc: string;
+  __default_params?: D;
+  __meta: XApiMeta;
 };
 
 export type XApiRegistry = Record<string, XCallableApi<unknown, unknown>>;
@@ -101,8 +102,6 @@ export interface XUnknownApiWritableStore extends XUnknownApiStore {
 
 export interface XNamespace {
   api: XApiGroupedRegistry;
-  query: XApiRegistry;
-  action: XApiRegistry;
   selfUserId?: string;
   __unknown_api: XUnknownApiStore;
   paginateCursorApi: XPaginateCursorApi;

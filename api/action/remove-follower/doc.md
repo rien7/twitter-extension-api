@@ -54,7 +54,7 @@ Type name: `RemoveFollowerResponse`
 import { removeFollower } from '../api';
 
 const response = await removeFollower({
-  targetUserId: '1808093317894492160'
+  targetUserId: '42'
 });
 ```
 
@@ -64,9 +64,9 @@ const response = await removeFollower({
 import { removeFollower } from '../api';
 
 const response = await removeFollower({
-  targetUserId: '1808093317894492160',
+  targetUserId: '42',
   variablesOverride: {
-    target_user_id: '1808093317894492160'
+    target_user_id: '42'
   }
 });
 ```

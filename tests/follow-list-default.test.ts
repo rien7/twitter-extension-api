@@ -17,14 +17,14 @@ describe('followList defaults', () => {
 
   it('builds a request from defaults and required userId', () => {
     const request = buildFollowListRequest({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(request.operationName).toBe(DEFAULT_FOLLOW_LIST_OPERATION_NAME);
     expect(request.queryId).toBe(DEFAULT_FOLLOW_LIST_QUERY_ID);
     expect(request.variables).toEqual({
       ...DEFAULT_FOLLOW_LIST_VARIABLES,
-      userId: '1882474049324081152'
+      userId: '42'
     });
     expect(request.features).toEqual(DEFAULT_FOLLOW_LIST_FEATURES);
   });
@@ -63,10 +63,10 @@ describe('followList defaults', () => {
 
   it('uses self userId from twid cookie when input userId is omitted', () => {
     vi.stubGlobal('document', {
-      cookie: 'twid=u%3D1882474049324081152'
+      cookie: 'twid=u%3D42'
     });
 
     const request = buildFollowListRequest();
-    expect(request.variables.userId).toBe('1882474049324081152');
+    expect(request.variables.userId).toBe('42');
   });
 });

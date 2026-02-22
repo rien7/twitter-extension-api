@@ -5,8 +5,8 @@ import { collectCursorPages, paginateCursorApi } from './sdk/pagination';
 import { getSelfUserId, initializeSelfUserIdFromCookie } from './sdk/self-user-id';
 
 export type {
-  XApiDesc,
   XApiMatchRule,
+  XApiMeta,
   XApiGroupedRegistry,
   XApiPaginationDesc,
   XApiPaginationStrategy,

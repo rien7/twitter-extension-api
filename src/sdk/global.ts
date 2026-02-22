@@ -1,7 +1,6 @@
 import type {
   XApiGroupedRegistry,
   XApiRegistry,
-  XCallableApi,
   XNamespace,
   XUnknownApiInput,
   XUnknownApiRecord,
@@ -13,22 +12,16 @@ import { createUnknownApiStore, isUnknownApiWritableStore } from './unknown-api-
 export function ensureXNamespace(): XNamespace {
   const maybeExisting = window.x;
   if (maybeExisting && typeof maybeExisting === 'object') {
-    const groupedApi = ensureGroupedApiRegistry(
-      maybeExisting.api,
-      maybeExisting.query,
-      maybeExisting.action
-    );
+    const groupedApi = ensureGroupedApiRegistry(maybeExisting.api);
     maybeExisting.api = groupedApi;
-    maybeExisting.query = groupedApi.query;
-    maybeExisting.action = groupedApi.action;
+    delete (maybeExisting as Record<string, unknown>).query;
+    delete (maybeExisting as Record<string, unknown>).action;
     return maybeExisting;
   }
 
   const groupedApi = createGroupedApiRegistry();
   const namespace = {
-    api: groupedApi,
-    query: groupedApi.query,
-    action: groupedApi.action
+    api: groupedApi
   } as XNamespace;
   namespace.__unknown_api = createUnknownApiStore((input) => isKnownApiRecord(namespace.api, input));
 
@@ -103,29 +96,9 @@ function migrateLegacyRecords(
 }
 
 function ensureGroupedApiRegistry(
-  value: unknown,
-  legacyQueryRegistry?: unknown,
-  legacyActionRegistry?: unknown
+  value: unknown
 ): XApiGroupedRegistry {
-  if (isGroupedApiRegistry(value)) {
-    return value;
-  }
-
-  const grouped = createGroupedApiRegistry();
-  if (value && typeof value === 'object') {
-    // Migrate legacy flat registry into query bucket for backward compatibility.
-    for (const [apiKey, apiValue] of Object.entries(value as Record<string, unknown>)) {
-      if (!isCallableApi(apiValue)) {
-        continue;
-      }
-      grouped.query[apiKey] = apiValue;
-    }
-  }
-
-  mergeLegacyGroupApis(grouped.query, legacyQueryRegistry);
-  mergeLegacyGroupApis(grouped.action, legacyActionRegistry);
-
-  return grouped;
+  return isGroupedApiRegistry(value) ? value : createGroupedApiRegistry();
 }
 
 function createGroupedApiRegistry(): XApiGroupedRegistry {
@@ -147,25 +120,4 @@ function isGroupedApiRegistry(value: unknown): value is XApiGroupedRegistry {
     !!candidate.action &&
     typeof candidate.action === 'object'
   );
-}
-
-function isCallableApi(value: unknown): value is XCallableApi<unknown, unknown> {
-  if (typeof value !== 'function') {
-    return false;
-  }
-
-  const desc = (value as Partial<XCallableApi<unknown, unknown>>).__desc;
-  return Boolean(desc && typeof desc === 'object' && typeof desc.id === 'string');
-}
-
-function mergeLegacyGroupApis(target: XApiRegistry, candidate: unknown): void {
-  if (!candidate || typeof candidate !== 'object') {
-    return;
-  }
-
-  for (const [apiKey, apiValue] of Object.entries(candidate as Record<string, unknown>)) {
-    if (isCallableApi(apiValue)) {
-      target[apiKey] = apiValue;
-    }
-  }
 }

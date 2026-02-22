@@ -53,7 +53,7 @@ Type name: `FollowResponse`
 import { follow } from '../api';
 
 const response = await follow({
-  userId: '1526042174298550273'
+  userId: '42'
 });
 ```
 
@@ -63,7 +63,7 @@ const response = await follow({
 import { follow } from '../api';
 
 const response = await follow({
-  userId: '1526042174298550273',
+  userId: '42',
   formOverride: {
     include_want_retweets: '0'
   }

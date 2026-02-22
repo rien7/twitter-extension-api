@@ -5,14 +5,14 @@ import { createUnknownApiStore } from '../src/sdk/unknown-api-store';
 import type { XApiRegistry, XCallableApi } from '../src/shared/types';
 
 describe('__unknown_api store', () => {
-  it('filters known API requests by __desc.match', () => {
+  it('filters known API requests by __meta.match', () => {
     const registry: XApiRegistry = {};
 
     const knownApi = Object.assign(async () => ({}), {
-      __desc: {
+      __desc: '[post-tweet]\nPurpose: post a tweet.',
+      __meta: {
         id: 'post-tweet',
         title: 'Post Tweet',
-        doc: 'doc',
         match: {
           method: 'POST',
           path: '/i/api/graphql/*/CreateTweet',

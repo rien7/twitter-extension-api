@@ -53,7 +53,7 @@ Type name: `UnfollowResponse`
 import { unfollow } from '../api';
 
 const response = await unfollow({
-  userId: '1526042174298550273'
+  userId: '42'
 });
 ```
 
@@ -63,7 +63,7 @@ const response = await unfollow({
 import { unfollow } from '../api';
 
 const response = await unfollow({
-  userId: '1526042174298550273',
+  userId: '42',
   formOverride: {
     include_want_retweets: '0'
   }

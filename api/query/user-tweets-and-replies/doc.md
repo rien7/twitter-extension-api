@@ -88,7 +88,7 @@ const response = await userTweetsAndReplies({
 import { userTweetsAndReplies } from '../api';
 
 const response = await userTweetsAndReplies({
-  userId: '1882474049324081152',
+  userId: '42',
   cursor: 'cursor-bottom-token',
   count: 40,
   withCommunity: false,

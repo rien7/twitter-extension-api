@@ -116,7 +116,7 @@ describe('userTweets response normalization', () => {
     );
 
     const response = await userTweets({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(response.instructions).toHaveLength(2);

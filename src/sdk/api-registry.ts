@@ -1,6 +1,6 @@
 import type {
-  XApiDesc,
   XApiGroupedRegistry,
+  XApiMeta,
   XApiMatchRule,
   XApiRegistry,
   XCallableApi,
@@ -22,12 +22,12 @@ export function registerApis(target: XApiRegistry, apis: Record<string, XCallabl
   }
 }
 
-export function listApiDescriptions(target: XApiRegistry | XApiGroupedRegistry): XApiDesc[] {
-  return listRegisteredApis(target).map((api) => api.__desc);
+export function listApiMetadata(target: XApiRegistry | XApiGroupedRegistry): XApiMeta[] {
+  return listRegisteredApis(target).map((api) => api.__meta);
 }
 
 export function getKnownMatchRules(target: XApiRegistry | XApiGroupedRegistry): XApiMatchRule[] {
-  return listApiDescriptions(target).map((desc) => desc.match);
+  return listApiMetadata(target).map((meta) => meta.match);
 }
 
 export function isKnownApiRecord(

@@ -18,14 +18,14 @@ describe('likes defaults', () => {
 
   it('builds a request from defaults and required userId', () => {
     const request = buildLikesRequest({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(request.operationName).toBe(DEFAULT_LIKES_OPERATION_NAME);
     expect(request.queryId).toBe(DEFAULT_LIKES_QUERY_ID);
     expect(request.variables).toEqual({
       ...DEFAULT_LIKES_VARIABLES,
-      userId: '1882474049324081152'
+      userId: '42'
     });
     expect(request.features).toEqual(DEFAULT_LIKES_FEATURES);
     expect(request.fieldToggles).toEqual(DEFAULT_LIKES_FIELD_TOGGLES);
@@ -71,10 +71,10 @@ describe('likes defaults', () => {
 
   it('uses self userId from twid cookie when input userId is omitted', () => {
     vi.stubGlobal('document', {
-      cookie: 'twid=u%3D1882474049324081152'
+      cookie: 'twid=u%3D42'
     });
 
     const request = buildLikesRequest();
-    expect(request.variables.userId).toBe('1882474049324081152');
+    expect(request.variables.userId).toBe('42');
   });
 });

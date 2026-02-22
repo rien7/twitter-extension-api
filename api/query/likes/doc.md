@@ -86,7 +86,7 @@ const response = await likes({
 import { likes } from '../api';
 
 const response = await likes({
-  userId: '1882474049324081152',
+  userId: '42',
   cursor: 'cursor-bottom-token',
   count: 40,
   variablesOverride: {

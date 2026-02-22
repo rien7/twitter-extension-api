@@ -31,10 +31,10 @@ describe('cursor pagination helpers', () => {
         return { prevCursor: 'c1', hasMore: false, items: [4] };
       },
       {
-        __desc: {
+        __desc: '[mock-timeline]\nPurpose: test cursor pagination.',
+        __meta: {
           id: 'mock-timeline',
           title: 'Mock Timeline',
-          doc: 'Mock cursor API',
           match: {
             method: 'GET',
             path: '/mock'
@@ -84,10 +84,10 @@ describe('cursor pagination helpers', () => {
         return { hasMore: false, items: [3] };
       },
       {
-        __desc: {
+        __desc: '[mock-timeline]\nPurpose: test cursor pagination.',
+        __meta: {
           id: 'mock-timeline',
           title: 'Mock Timeline',
-          doc: 'Mock cursor API',
           match: {
             method: 'GET',
             path: '/mock'
@@ -118,10 +118,10 @@ describe('cursor pagination helpers', () => {
     const nonPaginatedApi = Object.assign(
       async (): Promise<MockPageResponse> => ({ hasMore: false, items: [] }),
       {
-        __desc: {
+        __desc: '[non-paginated]\nPurpose: test missing pagination metadata.',
+        __meta: {
           id: 'non-paginated',
           title: 'Non Paginated',
-          doc: 'No pagination metadata',
           match: {},
           requestTypeName: 'Req',
           responseTypeName: 'Res'

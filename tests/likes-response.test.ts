@@ -97,7 +97,7 @@ describe('likes response normalization', () => {
     );
 
     const response = await likes({
-      userId: '1882474049324081152'
+      userId: '42'
     });
 
     expect(response.entries).toHaveLength(2);

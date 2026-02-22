@@ -1,44 +1,24 @@
 # Twitter Extension API SDK
 
-A standalone SDK for Chrome/Firefox extensions that need to interact with Twitter/X APIs without re-implementing low-level interception and request replay in every project.
+A reusable Twitter/X API SDK for browser extensions.
 
-## Why this repo exists
+This project focuses on:
+1. main-world network interception (`fetch` + `XHR`),
+2. unknown API contract capture to `window.x.__unknown_api`,
+3. typed, reusable APIs under `window.x.api.query/*` and `window.x.api.action/*`.
 
-In many Twitter extension projects, API logic is mixed with UI/business code.
-This repository extracts the reusable API layer into a dedicated package:
+## Why this exists
 
-1. intercept requests from page context,
-2. capture unknown API contracts,
-3. maintain reusable typed API modules under `api/*`.
+Many extension projects re-implement the same API layer repeatedly.
+This repository extracts that layer as a standalone SDK so plugin projects can share:
+1. interception,
+2. request replay conventions,
+3. typed API contracts,
+4. pagination helpers.
 
-`example-project` (symlinked in this repo) is the previous integrated project and serves as behavior reference.
+`example-project` in this repo is a legacy reference for capture/replay behavior.
 
-## Core capabilities
-
-- Main-world interception of `fetch` and `XMLHttpRequest`.
-- GraphQL-focused request classification (`operationName`, path, shape hash).
-- Unknown request registry at `window.x.__unknown_api`.
-- Callable API registry at `window.x.query.<lowerCamelName>` / `window.x.action.<lowerCamelName>`
-  (mirrored at `window.x.api.query.<lowerCamelName>` / `window.x.api.action.<lowerCamelName>`).
-- Unified GraphQL request header builder (authorization/csrf/language/x-twitter defaults).
-- Default-parameter strategy (`default.ts`) for APIs that do not require user input.
-- Minimal-input API design for user-action APIs with override support.
-- NPM library build outputs (ESM + IIFE).
-- WXT extension build for runtime injection.
-
-## Repository structure
-
-```txt
-twitter-extension-api/
-  entrypoints/        # WXT entrypoints (content/main world)
-  src/                # interception + runtime core
-  api/                # human/AI maintained API modules
-  scripts/            # tooling (AI brief generator only)
-  tests/              # shape/fingerprint/store tests
-  example-project ->  # reference project with older integrated implementation
-```
-
-## Quick start
+## Install and build
 
 ```bash
 pnpm install
@@ -47,9 +27,7 @@ pnpm test
 pnpm build
 ```
 
-## Runtime usage
-
-The content script initializes SDK in page main world.
+## Runtime bootstrap
 
 ```ts
 import { bootstrapTwitterExtensionApiSdk } from './src';
@@ -57,104 +35,104 @@ import { bootstrapTwitterExtensionApiSdk } from './src';
 bootstrapTwitterExtensionApiSdk();
 ```
 
-After initialization:
+After bootstrap:
 
 ```js
 window.x.__unknown_api.list();
-window.x.query.homeLatestTimeline.__desc;
-window.x.action.deleteTweet.__desc;
+window.x.api.query.homeLatestTimeline.__desc;
+window.x.api.query.homeLatestTimeline.__default_params;
+window.x.api.query.homeLatestTimeline.__meta;
 ```
 
-## API design pattern
+## Global runtime contract
 
-### Pattern A: passive timeline-like API (default-driven)
+`window.x` provides:
+1. `window.x.api.query.<lowerCamelName>`
+2. `window.x.api.action.<lowerCamelName>`
+3. `window.x.__unknown_api`
+4. `window.x.paginateCursorApi`
+5. `window.x.collectCursorPages`
+6. `window.x.selfUserId` (if resolved from cookie `twid`)
 
-For APIs like `home-latest-timeline`, callers should be able to pass nothing or only a few overrides.
-Defaults live in `default.ts`.
+Important:
+1. APIs are grouped under `window.x.api`.
+2. `window.x.query` / `window.x.action` are not exposed.
 
-```ts
-import { homeLatestTimeline } from './api/query/home-latest-timeline';
+## API callable metadata
 
-// zero-arg call, fully defaulted
-const firstPage = await homeLatestTimeline();
+Each callable API function has:
+1. `__desc: string`
+   - short plain-text quick help for normal users.
+   - reading `api.__desc` auto prints the description via `console.log`.
+2. `__default_params?: object`
+   - safe default request snapshot (when `default.ts` exists).
+3. `__meta: object`
+   - machine metadata for known-API matching and pagination.
 
-// override only what you need
-const nextPage = await homeLatestTimeline({
-  cursor: 'cursor-bottom-token',
-  count: 40,
-  featuresOverride: {
-    articles_preview_enabled: false
+Example:
+
+```js
+const api = window.x.api.query.likes;
+
+console.log(api.__desc);
+console.log(api.__default_params);
+console.log(api.__meta.match);
+```
+
+## Request defaults and userId fallback
+
+For query APIs that require `userId` (for example `likes`, `userTweets`, `followList`):
+1. `input.userId` is optional.
+2. SDK reads cookie `twid` during bootstrap.
+3. `twid` is URL-encoded (`u%3D42`); only the numeric id is used.
+4. Priority is:
+   - explicit `input.userId`
+   - fallback self user id
+   - otherwise throw clear error.
+
+## Pagination helpers
+
+Cursor APIs expose `nextCursor`, `prevCursor`, `hasMore` and can be consumed with helpers:
+
+```js
+const firstPage = await window.x.api.query.likes({ count: 20 });
+
+const collected = await window.x.collectCursorPages(
+  window.x.api.query.likes,
+  { count: 20 },
+  {
+    maxPages: 3,
+    extractItems: (page) => page.tweets ?? []
   }
-});
+);
 ```
 
-### Pattern B: user-action API (minimal required input)
+## API directory layout
 
-For APIs like `tweet-detail`, expose only required business params (for example `detailId`) and keep protocol-heavy defaults in `default.ts`.
-
-```ts
-// Example shape (not implemented in this repo yet)
-// tweetDetail({ detailId: '123' })
-// tweetDetail({ detailId: '123', variablesOverride: { withVoice: false } })
-```
-
-## API module file layout
-
-Base files:
+All APIs must follow:
 
 ```txt
 api/<query|action>/<kebab-id>/
   doc.md
   types.ts
+  desc.ts
+  fetch.ts
+  normalize.ts
   index.ts
+  default.ts        # required when stable defaults exist
 ```
 
-Add `default.ts` when stable default params exist:
+## Adding a new API
 
-```txt
-api/<query|action>/<kebab-id>/
-  default.ts
-```
-
-## Adding a new API (AI-first workflow)
-
-Important: this repo does **not** use script-based source generation for `api/*`.
-
-### Step 1: export unknown record
-
-From browser console:
+1. Export unknown records:
 
 ```js
 window.x.__unknown_api.list();
 ```
 
-Save result to a json file.
-
-### Step 2: generate AI brief
-
-```bash
-pnpm gen:api -- --input ./json/unknown-api.json --output ./tmp/unknown-api-brief.md
-```
-
-This command only outputs analysis/brief content. It does not create API files.
-
-### Step 3: let AI write API module files
-
-Create/update manually (via AI assistance):
-
-```txt
-api/<query|action>/<kebab-id>/
-  doc.md
-  types.ts
-  index.ts
-  default.ts   # when defaults are needed
-```
-
-### Step 4: register API
-
-Update `api/index.ts` to export and register under query/action groups using lowerCamelCase keys.
-
-### Step 5: validate
+2. Implement API files manually under `api/<scope>/<id>/` with required structure.
+3. Register exports in `api/index.ts`.
+4. Run validation:
 
 ```bash
 pnpm tsc --noEmit
@@ -162,24 +140,15 @@ pnpm test
 pnpm build
 ```
 
-## Quality bar for generated APIs
+## Quality baseline
 
-1. `types.ts` must prefer explicit interfaces, not all-`unknown` placeholders.
-2. `doc.md` and `__desc.doc` must explain field semantics clearly.
-3. For passive APIs, default params must be centralized in `default.ts`.
-4. For action APIs, public request input should be minimal + override-friendly.
-5. Sensitive values must remain redacted.
+1. Top-level request/response types must be explicit.
+2. `__desc` must be concise plain text.
+3. `doc.md` must be detailed (field meanings, errors, examples).
+4. Keep full original payload under `__original`.
+5. Never persist sensitive values (auth/cookie/csrf/token secrets).
 
-## Relationship with example-project
+## Key documents
 
-Use `example-project` to understand legacy implementation details:
-- XHR intercept/replay mechanics,
-- GraphQL feature flags,
-- timeline/tweet response handling.
-
-This repo should keep those behaviors but expose them as reusable API modules independent of UI.
-
-## Key docs
-
-- `AGENTS.md` — contributor and AI agent execution rules.
-- `api/AI_GENERATE.md` — detailed AI generation policy and acceptance criteria.
+1. `AGENTS.md` — contributor + AI execution rules.
+2. `api/AI_GENERATE.md` — API generation policy.

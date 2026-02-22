@@ -69,7 +69,7 @@ const page = await followList({
 import { followList } from '../api';
 
 const nextPage = await followList({
-  userId: '1882474049324081152',
+  userId: '42',
   cursor: '1847321620788932295|2025507657086926796',
   count: 40,
   featuresOverride: {

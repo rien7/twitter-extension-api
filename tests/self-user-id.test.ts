@@ -15,12 +15,12 @@ describe('self user id from twid cookie', () => {
   });
 
   it('extracts numeric user id from URL-encoded twid value', () => {
-    expect(extractUserIdFromTwidValue('u%3D1882474049324081152')).toBe('1882474049324081152');
+    expect(extractUserIdFromTwidValue('u%3D42')).toBe('42');
   });
 
   it('initializes self user id from cookie and mirrors to window.x', () => {
     vi.stubGlobal('document', {
-      cookie: 'twid=u%3D1882474049324081152'
+      cookie: 'twid=u%3D42'
     });
     vi.stubGlobal('window', {
       x: {}
@@ -28,9 +28,9 @@ describe('self user id from twid cookie', () => {
 
     const resolved = initializeSelfUserIdFromCookie();
 
-    expect(resolved).toBe('1882474049324081152');
-    expect(getSelfUserId()).toBe('1882474049324081152');
-    expect((window as { x?: { selfUserId?: string } }).x?.selfUserId).toBe('1882474049324081152');
+    expect(resolved).toBe('42');
+    expect(getSelfUserId()).toBe('42');
+    expect((window as { x?: { selfUserId?: string } }).x?.selfUserId).toBe('42');
   });
 
   it('throws when both explicit and cookie-based user id are unavailable', () => {

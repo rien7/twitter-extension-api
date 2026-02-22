@@ -53,7 +53,7 @@ Type name: `UnblockResponse`
 import { unblock } from '../api';
 
 const response = await unblock({
-  userId: '1744935284939079681'
+  userId: '42'
 });
 ```
 
@@ -63,9 +63,9 @@ const response = await unblock({
 import { unblock } from '../api';
 
 const response = await unblock({
-  userId: '1744935284939079681',
+  userId: '42',
   formOverride: {
-    user_id: '1744935284939079681'
+    user_id: '42'
   }
 });
 ```
