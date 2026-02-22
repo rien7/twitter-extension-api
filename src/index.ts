@@ -1,0 +1,85 @@
+import { registerBuiltInApis } from '../api';
+import { installNetworkInterceptors } from './page/interceptor';
+import { ensureUnknownApiStore, ensureXNamespace } from './sdk/global';
+import { collectCursorPages, paginateCursorApi } from './sdk/pagination';
+import { getSelfUserId, initializeSelfUserIdFromCookie } from './sdk/self-user-id';
+
+export type {
+  XApiDesc,
+  XApiMatchRule,
+  XApiGroupedRegistry,
+  XApiPaginationDesc,
+  XApiPaginationStrategy,
+  XApiRegistry,
+  XCollectCursorPages,
+  XCallableApi,
+  XCursorCollectResult,
+  XCursorPaginateOptions,
+  XCursorPaginateStep,
+  XCursorPaginationRequest,
+  XCursorPaginationResponse,
+  XGraphqlMeta,
+  XNamespace,
+  XPaginateCursorApi,
+  XShapeNode,
+  XUnknownApiInput,
+  XUnknownApiRecord,
+  XUnknownApiStore
+} from './shared/types';
+
+export {
+  hashShape,
+  hashString,
+  inferShape,
+  normalizeMethod,
+  normalizePath,
+  redactSensitiveData,
+  sanitizeHeaders
+} from './shared/shape';
+
+export { detectGraphqlMeta } from './page/graphql';
+export { buildGraphqlHeaders, getLatestGraphqlHeaders, setLatestGraphqlHeaders } from './sdk/request-headers';
+export { collectCursorPages, paginateCursorApi };
+export { extractUserIdFromTwidValue, getSelfUserId, initializeSelfUserIdFromCookie } from './sdk/self-user-id';
+export {
+  builtInActionApis,
+  builtInQueryApis,
+  builtInApis,
+  block,
+  deleteRetweet,
+  deleteTweet,
+  follow,
+  followList,
+  removeFollower,
+  homeLatestTimeline,
+  likes,
+  registerBuiltInApis,
+  tweetDetail,
+  unfavoriteTweet,
+  unblock,
+  unfollow,
+  userTweets,
+  userTweetsAndReplies
+} from '../api';
+
+export function bootstrapTwitterExtensionApiSdk() {
+  if (typeof window === 'undefined') {
+    throw new Error('bootstrapTwitterExtensionApiSdk can only run in browser context.');
+  }
+
+  initializeSelfUserIdFromCookie();
+  const namespace = ensureXNamespace();
+  const selfUserId = getSelfUserId();
+  if (selfUserId) {
+    namespace.selfUserId = selfUserId;
+  }
+  namespace.paginateCursorApi = paginateCursorApi;
+  namespace.collectCursorPages = collectCursorPages;
+  registerBuiltInApis(namespace.api);
+  ensureUnknownApiStore(namespace);
+  installNetworkInterceptors({ namespace });
+
+  return namespace;
+}
+
+export const initTwitterExtensionApiSdk = bootstrapTwitterExtensionApiSdk;
