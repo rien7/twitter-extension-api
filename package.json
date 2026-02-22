@@ -1,0 +1,40 @@
+{
+  "name": "twitter-extension-api-sdk",
+  "version": "0.1.0",
+  "description": "Twitter/X browser extension SDK for GraphQL interception and reusable API wrappers.",
+  "type": "module",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "api"
+  ],
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build:ext": "wxt build",
+    "build:lib": "tsup",
+    "build": "pnpm run build:ext && pnpm run build:lib",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsup": "^8.3.5",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5",
+    "wxt": "^0.20.6"
+  },
+  "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d"
+}

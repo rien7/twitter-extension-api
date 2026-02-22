@@ -1,0 +1,11 @@
+node_modules
+dist
+.output
+.wxt
+coverage
+*.log
+.DS_Store
+.pnpm-store
+# json
+output
+example-project
