@@ -10,6 +10,8 @@
 4. 机器匹配/分页所需信息放到 `__meta`，不要混进 `__desc`。
 5. 存在默认参数时必须提供 `__default_params`。
 6. 不做旧结构兼容：禁止生成旧式对象型 `__desc` 或 fallback 分支。
+7. 所有 tweetId 类示例值统一使用 `42`（包含 `tweetId` / `tweet_id` / `source_tweet_id` / `focalTweetId` 等）。
+8. 示例必须保留字段名，不允许只写裸值（例如禁止 `{ '42' }`）。
 
 ## 1. 输入来源
 
@@ -150,6 +152,13 @@ Returns: tweets, conversationTweetIds, nextCursor, hasMore, errors
 6. `pagination`（若支持）
 
 注意：known API 去重与分页自动化基于 `__meta`，不是 `__desc`。
+
+## 6.4 unknown_api fingerprint 的 tweetId 脱敏（强制）
+
+在生成 GraphQL unknown_api fingerprint 时：
+1. 先对变量中的 tweetId 类字段值做归一化（统一为 `42`）。
+2. 再计算 `variablesShapeHash`。
+3. 目标：同一 operation 不因 tweetId 不同而产生多条无法合并的 unknown 记录。
 
 ## 7. 请求发送层（fetch.ts）
 

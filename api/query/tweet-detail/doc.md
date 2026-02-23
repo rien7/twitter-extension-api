@@ -72,7 +72,7 @@ Type name: `TweetDetailResponse`
 import { tweetDetail } from '../api';
 
 const response = await tweetDetail({
-  detailId: '2025389405876486370'
+  detailId: '42'
 });
 ```
 
@@ -82,7 +82,7 @@ const response = await tweetDetail({
 import { tweetDetail } from '../api';
 
 const response = await tweetDetail({
-  detailId: '2025389405876486370',
+  detailId: '42',
   variablesOverride: {
     referrer: 'TweetDetailPage'
   },

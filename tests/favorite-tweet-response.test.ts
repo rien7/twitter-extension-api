@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { unfavoriteTweet } from '../api/action/unfavorite-tweet';
-import type { UnfavoriteTweetOriginalResponse } from '../api/action/unfavorite-tweet/types';
+import { favoriteTweet } from '../api/action/favorite-tweet';
+import type { FavoriteTweetOriginalResponse } from '../api/action/favorite-tweet/types';
 
-describe('unfavoriteTweet response normalization', () => {
+describe('favoriteTweet response normalization', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
   it('lifts common fields and keeps full raw payload in __original', async () => {
-    const rawPayload: UnfavoriteTweetOriginalResponse = {
+    const rawPayload: FavoriteTweetOriginalResponse = {
       data: {
-        unfavorite_tweet: 'Done'
+        favorite_tweet: 'Done'
       }
     };
 
@@ -26,7 +26,7 @@ describe('unfavoriteTweet response normalization', () => {
       })
     );
 
-    const response = await unfavoriteTweet({
+    const response = await favoriteTweet({
       tweetId: '42'
     });
 

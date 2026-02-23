@@ -15,7 +15,7 @@ describe('deleteRetweet response normalization', () => {
         unretweet: {
           source_tweet_results: {
             result: {
-              rest_id: '77'
+              rest_id: '42'
             }
           }
         }
@@ -33,12 +33,12 @@ describe('deleteRetweet response normalization', () => {
     );
 
     const response = await deleteRetweet({
-      tweetId: '77'
+      tweetId: '42'
     });
 
     expect(response.success).toBe(true);
-    expect(response.sourceTweetId).toBe('77');
-    expect(response.unretweetedTweetId).toBe('77');
+    expect(response.sourceTweetId).toBe('42');
+    expect(response.unretweetedTweetId).toBe('42');
     expect(response.__original).toEqual(rawPayload);
   });
 });

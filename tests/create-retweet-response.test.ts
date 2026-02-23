@@ -1,18 +1,24 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { unfavoriteTweet } from '../api/action/unfavorite-tweet';
-import type { UnfavoriteTweetOriginalResponse } from '../api/action/unfavorite-tweet/types';
+import { createRetweet } from '../api/action/create-retweet';
+import type { CreateRetweetOriginalResponse } from '../api/action/create-retweet/types';
 
-describe('unfavoriteTweet response normalization', () => {
+describe('createRetweet response normalization', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
   it('lifts common fields and keeps full raw payload in __original', async () => {
-    const rawPayload: UnfavoriteTweetOriginalResponse = {
+    const rawPayload: CreateRetweetOriginalResponse = {
       data: {
-        unfavorite_tweet: 'Done'
+        create_retweet: {
+          retweet_results: {
+            result: {
+              rest_id: '2025809610016506341'
+            }
+          }
+        }
       }
     };
 
@@ -26,13 +32,13 @@ describe('unfavoriteTweet response normalization', () => {
       })
     );
 
-    const response = await unfavoriteTweet({
+    const response = await createRetweet({
       tweetId: '42'
     });
 
     expect(response.success).toBe(true);
-    expect(response.tweetId).toBe('42');
-    expect(response.message).toBe('Done');
+    expect(response.sourceTweetId).toBe('42');
+    expect(response.retweetId).toBe('2025809610016506341');
     expect(response.__original).toEqual(rawPayload);
   });
 });

@@ -44,6 +44,12 @@ Use it for semantics only, not as direct copy target.
 12. GraphQL responses must expose normalized top-level fields and keep full payload in `__original`.
 13. Sensitive values must remain redacted.
    - Never persist real auth/cookie/csrf token values.
+14. All hard-coded tweet-id examples must use `42`.
+   - Applies to API examples in `doc.md`, JSDoc examples, test fixtures, and JSON samples.
+   - Use explicit field names (`tweetId`, `tweet_id`, `source_tweet_id`, `focalTweetId`, etc.), not bare literals.
+15. Unknown API GraphQL fingerprinting must normalize tweet-id-like variables before hashing.
+   - Before computing `variablesShapeHash`, replace tweet-id-like variable values with `42`.
+   - This avoids duplicate unknown records for the same operation caused only by different tweet ids.
 
 ## API Module Layout
 

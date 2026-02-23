@@ -54,7 +54,7 @@ Type name: `DeleteRetweetResponse`
 import { deleteRetweet } from '../api';
 
 const response = await deleteRetweet({
-  tweetId: '2024887415656325141'
+  tweetId: '42'
 });
 ```
 
@@ -64,7 +64,7 @@ const response = await deleteRetweet({
 import { deleteRetweet } from '../api';
 
 const response = await deleteRetweet({
-  tweetId: '2024887415656325141',
+  tweetId: '42',
   darkRequest: true,
   variablesOverride: {
     dark_request: false

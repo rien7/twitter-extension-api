@@ -9,6 +9,7 @@ import {
 } from '../shared/shape';
 
 const TWITTER_GQL_PATH_SEGMENT = '/i/api/graphql/';
+const TWEET_ID_FINGERPRINT_PLACEHOLDER = '42';
 
 export function isTwitterGraphqlPath(path: string): boolean {
   return normalizePath(path).includes(TWITTER_GQL_PATH_SEGMENT);
@@ -49,7 +50,11 @@ export function detectGraphqlMeta(input: {
 
   const query = parsedFromPayload.query ?? parsedFromUrl.query;
   const variables = parsedFromPayload.variables ?? parsedFromUrl.variables;
-  const variablesShapeHash = variables ? hashShape(inferShape(redactSensitiveData(variables))) : undefined;
+  const fingerprintVariables = normalizeTweetIdLikeVariablesForFingerprint(variables);
+  const variablesShapeHash =
+    fingerprintVariables === undefined
+      ? undefined
+      : hashShape(inferShape(redactSensitiveData(fingerprintVariables)));
 
   const looksLikeGraphql = byPath || Boolean(operationName || query || variables);
   if (!looksLikeGraphql) {
@@ -152,4 +157,76 @@ function normalizePayload(payload: unknown): unknown {
 
 function asString(value: unknown): string | undefined {
   return typeof value === 'string' ? value : undefined;
+}
+
+function normalizeTweetIdLikeVariablesForFingerprint(value: unknown): unknown {
+  return normalizeTweetIdLikeValue(value, {
+    forceMask: false,
+    seen: new WeakSet<object>()
+  });
+}
+
+function normalizeTweetIdLikeValue(
+  value: unknown,
+  context: {
+    key?: string;
+    forceMask: boolean;
+    seen: WeakSet<object>;
+  }
+): unknown {
+  const shouldMask = context.forceMask || isTweetIdLikeKey(context.key);
+
+  if (value === null || value === undefined) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    return shouldMask ? TWEET_ID_FINGERPRINT_PLACEHOLDER : value;
+  }
+
+  if (typeof value === 'number') {
+    return shouldMask ? Number(TWEET_ID_FINGERPRINT_PLACEHOLDER) : value;
+  }
+
+  if (typeof value === 'boolean') {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) =>
+      normalizeTweetIdLikeValue(item, {
+        forceMask: shouldMask,
+        seen: context.seen
+      })
+    );
+  }
+
+  if (typeof value !== 'object') {
+    return value;
+  }
+
+  if (context.seen.has(value as object)) {
+    return '[Circular]';
+  }
+  context.seen.add(value as object);
+
+  const output: Record<string, unknown> = {};
+  for (const [childKey, childValue] of Object.entries(value as Record<string, unknown>)) {
+    output[childKey] = normalizeTweetIdLikeValue(childValue, {
+      key: childKey,
+      forceMask: shouldMask,
+      seen: context.seen
+    });
+  }
+
+  return output;
+}
+
+function isTweetIdLikeKey(key: string | undefined): boolean {
+  if (!key) {
+    return false;
+  }
+
+  const normalized = key.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+  return normalized.endsWith('tweetid') || normalized.endsWith('tweetids');
 }

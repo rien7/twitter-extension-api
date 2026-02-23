@@ -1,18 +1,18 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { unfavoriteTweet } from '../api/action/unfavorite-tweet';
-import type { UnfavoriteTweetOriginalResponse } from '../api/action/unfavorite-tweet/types';
+import { createBookmark } from '../api/action/create-bookmark';
+import type { CreateBookmarkOriginalResponse } from '../api/action/create-bookmark/types';
 
-describe('unfavoriteTweet response normalization', () => {
+describe('createBookmark response normalization', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
   it('lifts common fields and keeps full raw payload in __original', async () => {
-    const rawPayload: UnfavoriteTweetOriginalResponse = {
+    const rawPayload: CreateBookmarkOriginalResponse = {
       data: {
-        unfavorite_tweet: 'Done'
+        tweet_bookmark_put: 'Done'
       }
     };
 
@@ -26,7 +26,7 @@ describe('unfavoriteTweet response normalization', () => {
       })
     );
 
-    const response = await unfavoriteTweet({
+    const response = await createBookmark({
       tweetId: '42'
     });
 

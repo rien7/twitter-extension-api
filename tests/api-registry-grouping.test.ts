@@ -8,7 +8,11 @@ describe('api registry grouping', () => {
     expect(builtInQueryApis.homeLatestTimeline).toBeDefined();
     expect(builtInQueryApis.followList).toBeDefined();
     expect(builtInActionApis.block).toBeDefined();
+    expect(builtInActionApis.createBookmark).toBeDefined();
+    expect(builtInActionApis.createRetweet).toBeDefined();
+    expect(builtInActionApis.deleteBookmark).toBeDefined();
     expect(builtInActionApis.deleteTweet).toBeDefined();
+    expect(builtInActionApis.favoriteTweet).toBeDefined();
     expect(builtInActionApis.removeFollower).toBeDefined();
     expect(builtInActionApis.unfollow).toBeDefined();
     expect(builtInActionApis.unblock).toBeDefined();
@@ -25,7 +29,11 @@ describe('api registry grouping', () => {
     expect(target.query.homeLatestTimeline).toBeDefined();
     expect(target.query['home-latest-timeline']).toBeUndefined();
     expect(target.action.block).toBeDefined();
+    expect(target.action.createBookmark).toBeDefined();
+    expect(target.action.createRetweet).toBeDefined();
+    expect(target.action.deleteBookmark).toBeDefined();
     expect(target.action.deleteTweet).toBeDefined();
+    expect(target.action.favoriteTweet).toBeDefined();
     expect(target.action.removeFollower).toBeDefined();
     expect(target.action.unfollow).toBeDefined();
   });

@@ -1,7 +1,11 @@
 import type { XApiGroupedRegistry, XApiRegistry, XCallableApi } from '../src/shared/types';
 import { block } from './action/block';
+import { createBookmark } from './action/create-bookmark';
+import { createRetweet } from './action/create-retweet';
+import { deleteBookmark } from './action/delete-bookmark';
 import { deleteRetweet } from './action/delete-retweet';
 import { deleteTweet } from './action/delete-tweet';
+import { favoriteTweet } from './action/favorite-tweet';
 import { follow } from './action/follow';
 import { removeFollower } from './action/remove-follower';
 import { unfavoriteTweet } from './action/unfavorite-tweet';
@@ -17,6 +21,10 @@ import { userTweetsAndReplies } from './query/user-tweets-and-replies';
 export { deleteRetweet } from './action/delete-retweet';
 export { deleteTweet } from './action/delete-tweet';
 export { block } from './action/block';
+export { createBookmark } from './action/create-bookmark';
+export { createRetweet } from './action/create-retweet';
+export { deleteBookmark } from './action/delete-bookmark';
+export { favoriteTweet } from './action/favorite-tweet';
 export { follow } from './action/follow';
 export { removeFollower } from './action/remove-follower';
 export { unfavoriteTweet } from './action/unfavorite-tweet';
@@ -34,6 +42,14 @@ export * from './action/delete-tweet/default';
 export * from './action/delete-tweet/types';
 export * from './action/block/default';
 export * from './action/block/types';
+export * from './action/create-bookmark/default';
+export * from './action/create-bookmark/types';
+export * from './action/create-retweet/default';
+export * from './action/create-retweet/types';
+export * from './action/delete-bookmark/default';
+export * from './action/delete-bookmark/types';
+export * from './action/favorite-tweet/default';
+export * from './action/favorite-tweet/types';
 export * from './action/follow/default';
 export * from './action/follow/types';
 export * from './action/remove-follower/default';
@@ -68,8 +84,12 @@ export const builtInQueryApis: XApiRegistry = {
 
 export const builtInActionApis: XApiRegistry = {
   block: block as XCallableApi<unknown, unknown>,
+  createBookmark: createBookmark as XCallableApi<unknown, unknown>,
+  createRetweet: createRetweet as XCallableApi<unknown, unknown>,
+  deleteBookmark: deleteBookmark as XCallableApi<unknown, unknown>,
   deleteRetweet: deleteRetweet as XCallableApi<unknown, unknown>,
   deleteTweet: deleteTweet as XCallableApi<unknown, unknown>,
+  favoriteTweet: favoriteTweet as XCallableApi<unknown, unknown>,
   unfavoriteTweet: unfavoriteTweet as XCallableApi<unknown, unknown>,
   follow: follow as XCallableApi<unknown, unknown>,
   unfollow: unfollow as XCallableApi<unknown, unknown>,

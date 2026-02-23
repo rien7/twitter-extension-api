@@ -1,17 +1,17 @@
-# delete-tweet
+# create-retweet
 
 ## Purpose
-Delete one of the current user's tweets via Twitter/X GraphQL mutation.
+Retweet a source tweet via Twitter/X GraphQL mutation.
 
 Typical usage:
-- remove a just-posted tweet,
-- clean up scheduled or test tweets,
-- build extension-level moderation/delete workflows.
+- retweet action from tweet cards,
+- optimistic retweet toggles in extension UI,
+- workflow actions that amplify selected source tweets.
 
 ## Endpoint
 - Method: `POST`
-- Path pattern: `/i/api/graphql/*/DeleteTweet`
-- OperationName: `DeleteTweet`
+- Path pattern: `/i/api/graphql/*/CreateRetweet`
+- OperationName: `CreateRetweet`
 
 ## Parameter Strategy
 
@@ -21,17 +21,17 @@ This module follows the `action-minimal-input` pattern:
 - Caller can override low-level protocol values using `variablesOverride` and request metadata fields.
 
 ## Request Type
-Type name: `DeleteTweetRequest`
+Type name: `CreateRetweetRequest`
 
 ### Core fields
-- `tweetId`: Required tweet id to delete. Mapped to `variables.tweet_id`.
+- `tweetId`: Required source tweet id to retweet. Mapped to `variables.tweet_id`.
 - `darkRequest`: Convenience override for `variables.dark_request`.
 - `variablesOverride`: Partial override for raw GraphQL variables.
 - `headers`: Optional custom headers merged by shared `buildGraphqlHeaders`.
 - `endpoint` / `queryId` / `operationName`: Optional protocol overrides.
 
 ### Default behavior
-`buildDeleteTweetRequest(input)` merges in this order:
+`buildCreateRetweetRequest(input)` merges in this order:
 1. defaults from `default.ts`,
 2. `variablesOverride`,
 3. explicit business fields (`tweetId`, `darkRequest`).
@@ -39,31 +39,37 @@ Type name: `DeleteTweetRequest`
 So `tweetId` always wins over `variablesOverride.tweet_id`.
 
 ## Response Type
-Type name: `DeleteTweetResponse`
+Type name: `CreateRetweetResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when mutation branch exists and GraphQL error list is empty.
-- `tweetId`: Requested tweet id from input.
-- `deletedTweetId`: Server-returned id from `data.delete_tweet.tweet_results.result.rest_id` when available.
+- `sourceTweetId`: Requested source tweet id from input.
+- `retweetId`: Server-returned retweet id from `data.create_retweet.retweet_results.result.rest_id` when available.
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL payload for compatibility/debugging.
+
+## Error model and failure cases
+- Throws when `tweetId` is empty.
+- Throws when HTTP status is non-2xx.
+- Throws when response is not valid JSON.
+- Includes GraphQL `errors` in normalized response when server returns them.
 
 ## Minimal usage example
 
 ```ts
-import { deleteTweet } from '../api';
+import { createRetweet } from '../api';
 
-const response = await deleteTweet({
+const response = await createRetweet({
   tweetId: '42'
 });
 ```
 
-## Override usage example
+## Override/default-params example
 
 ```ts
-import { deleteTweet } from '../api';
+import { createRetweet } from '../api';
 
-const response = await deleteTweet({
+const response = await createRetweet({
   tweetId: '42',
   darkRequest: true,
   variablesOverride: {
@@ -72,13 +78,7 @@ const response = await deleteTweet({
 });
 ```
 
-## Security and stability
+## Security and stability notes
 - Never persist real auth/cookie/csrf values into source files.
 - QueryId and mutation variable shape can change over time; refresh from fresh captures when failures appear.
 - Use normalized fields for business logic, and use `__original` for fallback/diagnostics.
-
-## Normalized response mapping
-- `success` summarizes mutation branch presence + GraphQL error state.
-- `tweetId` reflects caller intent (requested target id).
-- `deletedTweetId` reflects server-confirmed deletion target when returned.
-- `__original` keeps full payload to preserve compatibility with unnormalized branches.

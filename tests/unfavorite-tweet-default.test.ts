@@ -11,7 +11,7 @@ import {
 describe('unfavoriteTweet defaults', () => {
   it('builds a request from defaults and required tweetId', () => {
     const request = buildUnfavoriteTweetRequest({
-      tweetId: '2025167189050053035'
+      tweetId: '42'
     });
 
     expect(request.endpoint).toBe(DEFAULT_UNFAVORITE_TWEET_ENDPOINT);
@@ -19,22 +19,22 @@ describe('unfavoriteTweet defaults', () => {
     expect(request.queryId).toBe(DEFAULT_UNFAVORITE_TWEET_QUERY_ID);
     expect(request.variables).toEqual({
       ...DEFAULT_UNFAVORITE_TWEET_VARIABLES,
-      tweet_id: '2025167189050053035'
+      tweet_id: '42'
     });
   });
 
   it('allows overrides while keeping tweetId as highest-priority field', () => {
     const request = buildUnfavoriteTweetRequest({
-      tweetId: '2025000000000000002',
+      tweetId: '42',
       queryId: 'custom-unfavorite-query-id',
       variablesOverride: {
-        tweet_id: '2025999999999999999'
+        tweet_id: '42'
       }
     });
 
     expect(request.queryId).toBe('custom-unfavorite-query-id');
     expect(request.endpoint).toBe('/i/api/graphql/custom-unfavorite-query-id/UnfavoriteTweet');
-    expect(request.variables.tweet_id).toBe('2025000000000000002');
+    expect(request.variables.tweet_id).toBe('42');
   });
 
   it('rejects empty tweetId at runtime', () => {
