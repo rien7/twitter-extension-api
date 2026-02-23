@@ -44,6 +44,21 @@ export function createUnknownApiStore(
         .map((record) => cloneRecord(record));
     },
 
+    search(text: string | string[]) {
+      if (typeof text === 'string') {
+        return this.list().filter(value => value.key.toLowerCase().includes(text.toLowerCase()))
+      } else if (typeof text === 'object' && 'length' in text) {
+        return this.list().filter(value => {
+          for (const searchText of text) {
+            if (value.key.toLowerCase().includes(searchText.toLowerCase())) {
+              return true
+            }
+          }
+          return false
+        })
+      }
+    },
+
     get(key) {
       const record = records.get(key);
       return record ? cloneRecord(record) : undefined;
