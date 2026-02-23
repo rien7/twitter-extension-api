@@ -8,6 +8,7 @@ describe('api registry grouping', () => {
     expect(builtInQueryApis.bookmarks).toBeDefined();
     expect(builtInQueryApis.homeLatestTimeline).toBeDefined();
     expect(builtInQueryApis.followList).toBeDefined();
+    expect(builtInQueryApis.followersYouFollow).toBeDefined();
     expect(builtInQueryApis.notificationsTimeline).toBeDefined();
     expect(builtInActionApis.block).toBeDefined();
     expect(builtInActionApis.createBookmark).toBeDefined();
@@ -16,6 +17,7 @@ describe('api registry grouping', () => {
     expect(builtInActionApis.deleteBookmark).toBeDefined();
     expect(builtInActionApis.deleteTweet).toBeDefined();
     expect(builtInActionApis.favoriteTweet).toBeDefined();
+    expect(builtInActionApis.grokTranslation).toBeDefined();
     expect(builtInActionApis.removeFollower).toBeDefined();
     expect(builtInActionApis.unfollow).toBeDefined();
     expect(builtInActionApis.unblock).toBeDefined();
@@ -31,6 +33,7 @@ describe('api registry grouping', () => {
 
     expect(target.query.bookmarks).toBeDefined();
     expect(target.query.homeLatestTimeline).toBeDefined();
+    expect(target.query.followersYouFollow).toBeDefined();
     expect(target.query.notificationsTimeline).toBeDefined();
     expect(target.query['home-latest-timeline']).toBeUndefined();
     expect(target.action.block).toBeDefined();
@@ -40,6 +43,7 @@ describe('api registry grouping', () => {
     expect(target.action.deleteBookmark).toBeDefined();
     expect(target.action.deleteTweet).toBeDefined();
     expect(target.action.favoriteTweet).toBeDefined();
+    expect(target.action.grokTranslation).toBeDefined();
     expect(target.action.removeFollower).toBeDefined();
     expect(target.action.unfollow).toBeDefined();
   });

@@ -1,5 +1,6 @@
 export { bookmarks } from './bookmarks';
 export { followList } from './follow-list';
+export { followersYouFollow } from './followers-you-follow';
 export { homeLatestTimeline } from './home-latest-timeline';
 export { likes } from './likes';
 export { notificationsTimeline } from './notifications-timeline';
@@ -11,6 +12,8 @@ export * from './bookmarks/default';
 export * from './bookmarks/types';
 export * from './follow-list/default';
 export * from './follow-list/types';
+export * from './followers-you-follow/default';
+export * from './followers-you-follow/types';
 export * from './home-latest-timeline/default';
 export * from './home-latest-timeline/types';
 export * from './likes/default';
