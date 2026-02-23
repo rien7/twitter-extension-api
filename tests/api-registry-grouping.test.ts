@@ -5,8 +5,10 @@ import type { XApiGroupedRegistry } from '../src/shared/types';
 
 describe('api registry grouping', () => {
   it('exposes built-in APIs by query/action with lowerCamelCase keys', () => {
+    expect(builtInQueryApis.bookmarks).toBeDefined();
     expect(builtInQueryApis.homeLatestTimeline).toBeDefined();
     expect(builtInQueryApis.followList).toBeDefined();
+    expect(builtInQueryApis.notificationsTimeline).toBeDefined();
     expect(builtInActionApis.block).toBeDefined();
     expect(builtInActionApis.createBookmark).toBeDefined();
     expect(builtInActionApis.createRetweet).toBeDefined();
@@ -26,7 +28,9 @@ describe('api registry grouping', () => {
 
     registerBuiltInApis(target);
 
+    expect(target.query.bookmarks).toBeDefined();
     expect(target.query.homeLatestTimeline).toBeDefined();
+    expect(target.query.notificationsTimeline).toBeDefined();
     expect(target.query['home-latest-timeline']).toBeUndefined();
     expect(target.action.block).toBeDefined();
     expect(target.action.createBookmark).toBeDefined();
