@@ -12,6 +12,7 @@ describe('api registry grouping', () => {
     expect(builtInActionApis.block).toBeDefined();
     expect(builtInActionApis.createBookmark).toBeDefined();
     expect(builtInActionApis.createRetweet).toBeDefined();
+    expect(builtInActionApis.createTweet).toBeDefined();
     expect(builtInActionApis.deleteBookmark).toBeDefined();
     expect(builtInActionApis.deleteTweet).toBeDefined();
     expect(builtInActionApis.favoriteTweet).toBeDefined();
@@ -35,6 +36,7 @@ describe('api registry grouping', () => {
     expect(target.action.block).toBeDefined();
     expect(target.action.createBookmark).toBeDefined();
     expect(target.action.createRetweet).toBeDefined();
+    expect(target.action.createTweet).toBeDefined();
     expect(target.action.deleteBookmark).toBeDefined();
     expect(target.action.deleteTweet).toBeDefined();
     expect(target.action.favoriteTweet).toBeDefined();

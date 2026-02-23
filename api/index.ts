@@ -2,6 +2,7 @@ import type { XApiGroupedRegistry, XApiRegistry, XCallableApi } from '../src/sha
 import { block } from './action/block';
 import { createBookmark } from './action/create-bookmark';
 import { createRetweet } from './action/create-retweet';
+import { createTweet } from './action/create-tweet';
 import { deleteBookmark } from './action/delete-bookmark';
 import { deleteRetweet } from './action/delete-retweet';
 import { deleteTweet } from './action/delete-tweet';
@@ -25,6 +26,7 @@ export { deleteTweet } from './action/delete-tweet';
 export { block } from './action/block';
 export { createBookmark } from './action/create-bookmark';
 export { createRetweet } from './action/create-retweet';
+export { createTweet } from './action/create-tweet';
 export { deleteBookmark } from './action/delete-bookmark';
 export { favoriteTweet } from './action/favorite-tweet';
 export { follow } from './action/follow';
@@ -50,6 +52,8 @@ export * from './action/create-bookmark/default';
 export * from './action/create-bookmark/types';
 export * from './action/create-retweet/default';
 export * from './action/create-retweet/types';
+export * from './action/create-tweet/default';
+export * from './action/create-tweet/types';
 export * from './action/delete-bookmark/default';
 export * from './action/delete-bookmark/types';
 export * from './action/favorite-tweet/default';
@@ -96,6 +100,7 @@ export const builtInActionApis: XApiRegistry = {
   block: block as XCallableApi<unknown, unknown>,
   createBookmark: createBookmark as XCallableApi<unknown, unknown>,
   createRetweet: createRetweet as XCallableApi<unknown, unknown>,
+  createTweet: createTweet as XCallableApi<unknown, unknown>,
   deleteBookmark: deleteBookmark as XCallableApi<unknown, unknown>,
   deleteRetweet: deleteRetweet as XCallableApi<unknown, unknown>,
   deleteTweet: deleteTweet as XCallableApi<unknown, unknown>,

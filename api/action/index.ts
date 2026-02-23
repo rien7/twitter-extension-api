@@ -1,6 +1,7 @@
 export { block } from './block';
 export { createBookmark } from './create-bookmark';
 export { createRetweet } from './create-retweet';
+export { createTweet } from './create-tweet';
 export { deleteBookmark } from './delete-bookmark';
 export { deleteRetweet } from './delete-retweet';
 export { deleteTweet } from './delete-tweet';
@@ -17,6 +18,8 @@ export * from './create-bookmark/default';
 export * from './create-bookmark/types';
 export * from './create-retweet/default';
 export * from './create-retweet/types';
+export * from './create-tweet/default';
+export * from './create-tweet/types';
 export * from './delete-bookmark/default';
 export * from './delete-bookmark/types';
 export * from './delete-retweet/default';
