@@ -1,4 +1,4 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type {
   NotificationsTimelineOriginalResponse,
   NotificationsTimelineResolvedRequest
@@ -12,7 +12,11 @@ export async function fetchNotificationsTimelineResponse(
   const response = await fetch(requestUrl, {
     method: 'GET',
     credentials: 'include',
-    headers: buildGraphqlHeaders(request.headers)
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'GET',
+      endpoint: request.endpoint,
+      headers: request.headers
+    })
   });
 
   const responseText = await response.text();

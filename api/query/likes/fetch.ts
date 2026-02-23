@@ -1,4 +1,4 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type {
   LikesOriginalResponse,
   LikesResolvedRequest
@@ -10,7 +10,11 @@ export async function fetchLikesResponse(request: LikesResolvedRequest): Promise
   const response = await fetch(requestUrl, {
     method: 'GET',
     credentials: 'include',
-    headers: buildGraphqlHeaders(request.headers)
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'GET',
+      endpoint: request.endpoint,
+      headers: request.headers
+    })
   });
 
   const responseText = await response.text();

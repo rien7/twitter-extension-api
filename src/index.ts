@@ -38,7 +38,12 @@ export {
 } from './shared/shape';
 
 export { detectGraphqlMeta } from './page/graphql';
-export { buildGraphqlHeaders, getLatestGraphqlHeaders, setLatestGraphqlHeaders } from './sdk/request-headers';
+export {
+  buildGraphqlHeaders,
+  buildGraphqlHeadersForRequest,
+  getLatestGraphqlHeaders,
+  setLatestGraphqlHeaders
+} from './sdk/request-headers';
 export { collectCursorPages, paginateCursorApi };
 export { extractUserIdFromTwidValue, getSelfUserId, initializeSelfUserIdFromCookie } from './sdk/self-user-id';
 export {

@@ -1,4 +1,4 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type { UnfollowForm, UnfollowOriginalResponse, UnfollowResolvedRequest } from './types';
 
 export async function fetchUnfollowResponse(
@@ -7,10 +7,14 @@ export async function fetchUnfollowResponse(
   const response = await fetch(request.endpoint, {
     method: 'POST',
     credentials: 'include',
-    headers: buildGraphqlHeaders({
-      ...request.headers,
-      accept: 'application/json, text/plain, */*',
-      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'POST',
+      endpoint: request.endpoint,
+      headers: {
+        ...request.headers,
+        accept: 'application/json, text/plain, */*',
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
     }),
     body: buildFormBody(request.form)
   });

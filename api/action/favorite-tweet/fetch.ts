@@ -1,4 +1,4 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type { FavoriteTweetOriginalResponse, FavoriteTweetResolvedRequest } from './types';
 
 export async function fetchFavoriteTweetResponse(
@@ -7,7 +7,11 @@ export async function fetchFavoriteTweetResponse(
   const response = await fetch(request.endpoint, {
     method: 'POST',
     credentials: 'include',
-    headers: buildGraphqlHeaders(request.headers),
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'POST',
+      endpoint: request.endpoint,
+      headers: request.headers
+    }),
     body: JSON.stringify({
       operationName: request.operationName,
       queryId: request.queryId,

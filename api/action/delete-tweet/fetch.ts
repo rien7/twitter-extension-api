@@ -1,4 +1,4 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type { DeleteTweetOriginalResponse, DeleteTweetResolvedRequest } from './types';
 
 export async function fetchDeleteTweetResponse(
@@ -7,7 +7,11 @@ export async function fetchDeleteTweetResponse(
   const response = await fetch(request.endpoint, {
     method: 'POST',
     credentials: 'include',
-    headers: buildGraphqlHeaders(request.headers),
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'POST',
+      endpoint: request.endpoint,
+      headers: request.headers
+    }),
     body: JSON.stringify({
       operationName: request.operationName,
       queryId: request.queryId,

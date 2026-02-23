@@ -1,6 +1,15 @@
+import { ClientTransaction, handleXMigration } from 'x-client-transaction-id';
+
 const REPLAY_HEADER_IGNORE_LIST = new Set(['content-length', 'host', 'origin', 'referer']);
 
 let latestGraphqlHeaders: Record<string, string> | null = null;
+let clientTransactionPromise: Promise<ClientTransaction> | null = null;
+
+export interface BuildGraphqlHeadersForRequestInput {
+  method: string;
+  endpoint: string;
+  headers?: Record<string, string>;
+}
 
 export function setLatestGraphqlHeaders(headers: Record<string, string> | null): void {
   latestGraphqlHeaders = headers ? sanitizeReplayHeaders(headers) : null;
@@ -98,6 +107,103 @@ export function buildGraphqlHeaders(
   }
 
   return headers;
+}
+
+export async function buildGraphqlHeadersForRequest(
+  input: BuildGraphqlHeadersForRequestInput
+): Promise<Record<string, string>> {
+  const headers = buildGraphqlHeaders(input.headers);
+
+  // Always refresh transaction id per request; stale captured ids are not reusable.
+  delete headers['x-client-transaction-id'];
+
+  const transactionPath = resolveTransactionPath(input.endpoint);
+  if (!transactionPath) {
+    return headers;
+  }
+
+  const transactionId = await generateClientTransactionId(input.method, transactionPath);
+  if (transactionId) {
+    headers['x-client-transaction-id'] = transactionId;
+  }
+
+  return headers;
+}
+
+export function __resetClientTransactionForTests(): void {
+  clientTransactionPromise = null;
+}
+
+async function generateClientTransactionId(
+  method: string,
+  path: string
+): Promise<string | undefined> {
+  if (!canGenerateClientTransactionId()) {
+    return undefined;
+  }
+
+  try {
+    const transaction = await getClientTransaction();
+    return await transaction.generateTransactionId(method.toUpperCase(), path);
+  } catch {
+    return undefined;
+  }
+}
+
+function canGenerateClientTransactionId(): boolean {
+  return typeof window !== 'undefined' && typeof fetch === 'function';
+}
+
+async function getClientTransaction(): Promise<ClientTransaction> {
+  if (!clientTransactionPromise) {
+    clientTransactionPromise = createClientTransaction();
+  }
+
+  try {
+    return await clientTransactionPromise;
+  } catch (error) {
+    clientTransactionPromise = null;
+    throw error;
+  }
+}
+
+async function createClientTransaction(): Promise<ClientTransaction> {
+  const homeDocument = await handleXMigration();
+  return ClientTransaction.create(homeDocument);
+}
+
+function resolveTransactionPath(endpoint: string): string | undefined {
+  const trimmedEndpoint = endpoint.trim();
+  if (!trimmedEndpoint) {
+    return undefined;
+  }
+
+  try {
+    const parsedUrl = new URL(trimmedEndpoint, getBrowserOrigin());
+    return normalizeTransactionPath(parsedUrl.pathname);
+  } catch {
+    return undefined;
+  }
+}
+
+function getBrowserOrigin(): string {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin;
+  }
+
+  return 'https://x.com';
+}
+
+function normalizeTransactionPath(pathname: string): string {
+  const withoutApiPrefix = pathname.startsWith('/i/api')
+    ? pathname.slice('/i/api'.length)
+    : pathname;
+
+  if (!withoutApiPrefix) {
+    return '/';
+  }
+
+  return withoutApiPrefix.startsWith('/') ? withoutApiPrefix : `/${withoutApiPrefix}`;
 }
 
 function getCookieValue(name: string): string | null {

@@ -1,14 +1,18 @@
-import { buildGraphqlHeaders } from '../../../src/sdk/request-headers';
+import { buildGraphqlHeadersForRequest } from '../../../src/sdk/request-headers';
 import type { FollowForm, FollowOriginalResponse, FollowResolvedRequest } from './types';
 
 export async function fetchFollowResponse(request: FollowResolvedRequest): Promise<FollowOriginalResponse> {
   const response = await fetch(request.endpoint, {
     method: 'POST',
     credentials: 'include',
-    headers: buildGraphqlHeaders({
-      ...request.headers,
-      accept: 'application/json, text/plain, */*',
-      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    headers: await buildGraphqlHeadersForRequest({
+      method: 'POST',
+      endpoint: request.endpoint,
+      headers: {
+        ...request.headers,
+        accept: 'application/json, text/plain, */*',
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      }
     }),
     body: buildFormBody(request.form)
   });
