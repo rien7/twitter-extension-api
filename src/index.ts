@@ -69,6 +69,7 @@ export {
   likes,
   registerBuiltInApis,
   tweetDetail,
+  userByScreenName,
   unfavoriteTweet,
   unblock,
   unfollow,

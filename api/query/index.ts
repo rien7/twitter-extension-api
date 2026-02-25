@@ -5,6 +5,7 @@ export { homeLatestTimeline } from './home-latest-timeline';
 export { likes } from './likes';
 export { notificationsTimeline } from './notifications-timeline';
 export { tweetDetail } from './tweet-detail';
+export { userByScreenName } from './user-by-screenname';
 export { userTweets } from './user-tweets';
 export { userTweetsAndReplies } from './user-tweets-and-replies';
 
@@ -22,6 +23,8 @@ export * from './notifications-timeline/default';
 export * from './notifications-timeline/types';
 export * from './tweet-detail/default';
 export * from './tweet-detail/types';
+export * from './user-by-screenname/default';
+export * from './user-by-screenname/types';
 export * from './user-tweets/default';
 export * from './user-tweets/types';
 export * from './user-tweets-and-replies/default';

@@ -20,6 +20,7 @@ import { homeLatestTimeline } from './query/home-latest-timeline';
 import { likes } from './query/likes';
 import { notificationsTimeline } from './query/notifications-timeline';
 import { tweetDetail } from './query/tweet-detail';
+import { userByScreenName } from './query/user-by-screenname';
 import { userTweets } from './query/user-tweets';
 import { userTweetsAndReplies } from './query/user-tweets-and-replies';
 
@@ -44,6 +45,7 @@ export { homeLatestTimeline } from './query/home-latest-timeline';
 export { likes } from './query/likes';
 export { notificationsTimeline } from './query/notifications-timeline';
 export { tweetDetail } from './query/tweet-detail';
+export { userByScreenName } from './query/user-by-screenname';
 export { userTweets } from './query/user-tweets';
 export { userTweetsAndReplies } from './query/user-tweets-and-replies';
 export * from './action/delete-retweet/default';
@@ -88,6 +90,8 @@ export * from './query/notifications-timeline/default';
 export * from './query/notifications-timeline/types';
 export * from './query/tweet-detail/default';
 export * from './query/tweet-detail/types';
+export * from './query/user-by-screenname/default';
+export * from './query/user-by-screenname/types';
 export * from './query/user-tweets/default';
 export * from './query/user-tweets/types';
 export * from './query/user-tweets-and-replies/default';
@@ -99,6 +103,7 @@ export const builtInQueryApis: XApiRegistry = {
   likes: likes as XCallableApi<unknown, unknown>,
   notificationsTimeline: notificationsTimeline as XCallableApi<unknown, unknown>,
   tweetDetail: tweetDetail as XCallableApi<unknown, unknown>,
+  userByScreenName: userByScreenName as XCallableApi<unknown, unknown>,
   userTweets: userTweets as XCallableApi<unknown, unknown>,
   userTweetsAndReplies: userTweetsAndReplies as XCallableApi<unknown, unknown>,
   followList: followList as XCallableApi<unknown, unknown>,
