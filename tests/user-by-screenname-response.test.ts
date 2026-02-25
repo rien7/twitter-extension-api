@@ -72,16 +72,14 @@ describe('userByScreenName response normalization', () => {
       screenName: '@alice'
     });
 
+    expect(response.found).toBe(true);
     expect(response.resultType).toBe('User');
     expect(response.user?.userId).toBe('1');
     expect(response.user?.screenName).toBe('alice');
     expect(response.user?.relationship?.following).toBe(true);
-    expect(response.restId).toBe('1');
-    expect(response.legacyId).toBe('VXNlcjox');
-    expect(response.verified).toBe(true);
-    expect(response.isBlueVerified).toBe(false);
-    expect(response.canDm).toBe(true);
-    expect(response.canMediaTag).toBe(true);
+    expect(response.capabilities?.isBlueVerified).toBe(false);
+    expect(response.capabilities?.canDm).toBe(true);
+    expect(response.capabilities?.canMediaTag).toBe(true);
     expect(response.unavailableReason).toBeUndefined();
     expect(response.__original).toEqual(rawPayload);
   });
@@ -112,6 +110,7 @@ describe('userByScreenName response normalization', () => {
       screenName: 'suspended_user'
     });
 
+    expect(response.found).toBe(false);
     expect(response.resultType).toBe('UserUnavailable');
     expect(response.user).toBeUndefined();
     expect(response.unavailableReason).toBe('Suspended');

@@ -21,7 +21,7 @@ export const DELETE_RETWEET_DESC_TEXT = [
   '    - operationName',
   '    - darkRequest',
   '    - variablesOverride',
-  'Returns: success, sourceTweetId, unretweetedTweetId, errors'
+  'Returns: success, targetTweetId, resultTweetId, errors'
 ].join('\n');
 
 const DELETE_RETWEET_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

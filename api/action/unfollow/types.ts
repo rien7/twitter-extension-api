@@ -1,4 +1,8 @@
-import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTargetUserActionResponseBase,
+  XUserRelationshipSummary,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * REST form fields used by friendships/destroy endpoint.
@@ -71,13 +75,9 @@ export interface UnfollowOriginalResponse {
 /**
  * Normalized SDK response for unfollow action.
  */
-export interface UnfollowResponse {
-  success: boolean;
-  userId: string;
-  targetUser?: UnfollowTargetUserSummary;
+export interface UnfollowResponse
+  extends XTargetUserActionResponseBase<UnfollowOriginalResponse, UnfollowApiError> {
   relationship: UnfollowRelationshipSummary;
-  errors?: UnfollowApiError[];
-  __original: UnfollowOriginalResponse;
 }
 
 export type UnfollowTargetUserSummary = XUserSummary;

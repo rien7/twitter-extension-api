@@ -57,6 +57,16 @@ Use it for semantics only, not as direct copy target.
    - Put tweet view count under `tweet.stats.viewCount` (not top-level `tweet.viewCount`).
    - Quoted tweet linkage must use `quotedTweet?: XTweetSummary` (not `quotedTweetId`).
    - Action `targetUser` summary must use `userId` (not `id`).
+17. Normalized responses must use shared base response structures from `src/shared/types.ts`.
+   - Query timeline-like responses should extend `XTweetTimelineResponseBase` or `XUserTimelineResponseBase`.
+   - Other query responses should extend `XResponseBase`.
+   - Action responses should extend `XActionResponseBase`; user-target actions use `XTargetUserActionResponseBase`, tweet-target actions use `XTargetTweetActionResponseBase`.
+   - Top-level target id fields must be standardized as `targetUserId` / `targetTweetId`.
+   - If mutation response returns a canonical tweet id, expose it as `resultTweetId`.
+   - Create-tweet style responses expose created content as `resultTweet` (`XTweetSummary`), not duplicated tweet fields on response root.
+18. Do not keep legacy/transitional alias fields on normalized response root.
+   - Forbidden aliases include: `userId` (as target action id), `tweetId` (as target action id), `sourceTweetId`, `retweetId`, `deletedTweetId`, `restId`, `legacyId`.
+   - Put non-standard raw values under `__original`, or map into shared summary objects.
 
 ## API Module Layout
 
@@ -161,7 +171,13 @@ Each `doc.md` must include:
    - `nextCursor?: string`
    - `prevCursor?: string`
    - `hasMore: boolean`
-4. Keep compatibility aliases only when already used by API consumers.
+4. Do not add compatibility aliases in normalized root fields (current version is unreleased).
+5. Prioritize shared base fields before adding API-private root fields:
+   - Base: `errors`, `__original`
+   - Cursor page: `cursorTop`, `cursorBottom`, `nextCursor`, `prevCursor`, `hasMore`
+   - User-target action: `success`, `targetUserId`, `targetUser`, `relationship`
+   - Tweet-target action: `success`, `targetTweetId`, `targetTweet`
+   - Result id/action outcome: `resultTweetId` when applicable
 
 ## Shared Summary Conversion Rules
 

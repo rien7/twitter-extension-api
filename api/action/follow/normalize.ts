@@ -6,7 +6,7 @@ export function normalizeFollowResponse(
 ): FollowResponse {
   return {
     success: Boolean(payload.id_str) && !payload.errors?.length,
-    userId: requestedUserId,
+    targetUserId: requestedUserId,
     targetUser: {
       userId: payload.id_str,
       name: payload.name,

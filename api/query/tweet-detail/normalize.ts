@@ -57,6 +57,9 @@ export function normalizeTweetDetailResponse(
     focalTweet,
     cursorTop,
     cursorBottom,
+    nextCursor: cursorBottom,
+    prevCursor: cursorTop,
+    hasMore: Boolean(cursorBottom),
     conversationTweetIds: Array.from(conversationTweetIdSet),
     errors: payload.errors,
     __original: payload

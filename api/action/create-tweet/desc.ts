@@ -32,7 +32,7 @@ export const CREATE_TWEET_DESC_TEXT = [
   '    - darkRequest',
   '    - variablesOverride',
   '    - featuresOverride',
-  'Returns: success, mode, tweetId, text, quotedTweet, inReplyToTweetId, errors'
+  'Returns: success, mode, resultTweet, errors'
 ].join('\n');
 
 const CREATE_TWEET_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

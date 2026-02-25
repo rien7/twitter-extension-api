@@ -21,7 +21,7 @@ export const DELETE_TWEET_DESC_TEXT = [
   '    - operationName',
   '    - darkRequest',
   '    - variablesOverride',
-  'Returns: success, tweetId, deletedTweetId, errors'
+  'Returns: success, targetTweetId, resultTweetId, errors'
 ].join('\n');
 
 const DELETE_TWEET_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

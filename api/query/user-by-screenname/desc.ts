@@ -21,7 +21,7 @@ export const USER_BY_SCREEN_NAME_DESC_TEXT = [
   '    - variablesOverride',
   '    - featuresOverride',
   '    - fieldTogglesOverride',
-  'Returns: user, restId, verified, isBlueVerified, unavailableReason, errors'
+  'Returns: found, user, capabilities, unavailableReason, errors'
 ].join('\n');
 
 const USER_BY_SCREEN_NAME_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

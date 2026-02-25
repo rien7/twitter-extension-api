@@ -37,8 +37,8 @@ describe('createRetweet response normalization', () => {
     });
 
     expect(response.success).toBe(true);
-    expect(response.sourceTweetId).toBe('42');
-    expect(response.retweetId).toBe('2025809610016506341');
+    expect(response.targetTweetId).toBe('42');
+    expect(response.resultTweetId).toBe('2025809610016506341');
     expect(response.__original).toEqual(rawPayload);
   });
 });

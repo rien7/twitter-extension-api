@@ -77,6 +77,18 @@ api/<query|action>/<kebab-id>/
 2. 顶层请求/响应禁止用 `[key: string]: unknown` 作为最终定义。
 3. 完整响应必须保留在 `XxxResponse.__original`。
 4. 高频使用字段要提升到顶层（可保留适度层级）。
+5. 高频响应必须优先复用共享基类（`src/shared/types.ts`）：
+   - timeline query -> `XTweetTimelineResponseBase` 或 `XUserTimelineResponseBase`
+   - 非 timeline query -> `XResponseBase`
+   - action -> `XActionResponseBase`
+   - user-target action -> `XTargetUserActionResponseBase`
+   - tweet-target action -> `XTargetTweetActionResponseBase`
+6. action 根层目标 id 字段命名固定：
+   - 用户目标：`targetUserId`
+   - 推文目标：`targetTweetId`
+7. 若 mutation 返回服务端确认 tweet id，统一输出 `resultTweetId`。
+8. 发布类 mutation（如 create-tweet）统一输出 `resultTweet: XTweetSummary`，禁止在响应根层重复展开 tweet 字段。
+9. 禁止在响应根层保留过渡别名字段：`sourceTweetId` / `retweetId` / `deletedTweetId` / `restId` / `legacyId` 等。
 
 ## 5. 默认参数策略（default.ts）
 
@@ -194,6 +206,33 @@ Returns: tweets, conversationTweetIds, nextCursor, hasMore, errors
 5. 浏览量统一放到 `XTweetSummary.stats.viewCount`，不要再输出根层 `viewCount`。
 6. 引用推文统一使用 `XTweetSummary.quotedTweet`，不要再输出 `quotedTweetId`。
 7. action 场景中 `targetUser` 也必须按 `XUserSummary` 输出，主键字段统一使用 `userId`（不是 `id`）。
+
+### 8.2 高频顶层字段统一规则（强制）
+
+为避免不同 API 对同一业务语义命名不一致，响应顶层字段按以下顺序统一：
+1. 所有响应先包含：
+   - `errors`
+   - `__original`
+2. 分页响应统一包含：
+   - `cursorTop`
+   - `cursorBottom`
+   - `nextCursor`
+   - `prevCursor`
+   - `hasMore`
+3. 用户目标 action 统一包含：
+   - `success`
+   - `targetUserId`
+   - `targetUser`（可选）
+   - `relationship`（可选）
+4. 推文目标 action 统一包含：
+   - `success`
+   - `targetTweetId`
+   - `targetTweet`（可选）
+5. 需要表达服务端确认结果时，统一使用：
+   - `resultTweetId`
+6. create-tweet 类响应统一使用：
+   - `resultTweet`
+7. 不允许再新增同语义别名根字段（如 `tweetId`/`sourceTweetId` 同时并存）。
 
 ## 9. 导出层（index.ts）与 JSDoc
 

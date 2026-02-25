@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * DeleteBookmark GraphQL operation name captured from live traffic.
  */
@@ -69,17 +71,12 @@ export interface DeleteBookmarkOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface DeleteBookmarkResponse {
-  /** Whether delete-bookmark response string exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface DeleteBookmarkResponse
+  extends XTargetTweetActionResponseBase<DeleteBookmarkOriginalResponse, DeleteBookmarkGraphQLError> {
   /** Requested tweet id passed by caller. */
-  tweetId: string;
+  targetTweetId: string;
   /** Server response string, usually `Done`. */
   message?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: DeleteBookmarkGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: DeleteBookmarkOriginalResponse;
 }
 
 export interface DeleteBookmarkData {

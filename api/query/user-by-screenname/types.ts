@@ -1,4 +1,4 @@
-import type { XUserSummary } from '../../../src/shared/types';
+import type { XResponseBase, XUserSummary } from '../../../src/shared/types';
 
 /**
  * UserByScreenName GraphQL operation name captured from live traffic.
@@ -111,18 +111,19 @@ export type UserByScreenNameUserSummary = XUserSummary;
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface UserByScreenNameResponse {
+export interface UserByScreenNameResponse
+  extends XResponseBase<UserByScreenNameOriginalResponse, UserByScreenNameGraphQLError> {
+  found: boolean;
   resultType?: string;
   user?: UserByScreenNameUserSummary;
-  restId?: string;
-  legacyId?: string;
-  verified?: boolean;
+  unavailableReason?: string;
+  capabilities?: UserByScreenNameCapabilities;
+}
+
+export interface UserByScreenNameCapabilities {
   isBlueVerified?: boolean;
   canDm?: boolean;
   canMediaTag?: boolean;
-  unavailableReason?: string;
-  errors?: UserByScreenNameGraphQLError[];
-  __original: UserByScreenNameOriginalResponse;
 }
 
 export interface UserByScreenNameData {

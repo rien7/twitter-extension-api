@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * FavoriteTweet GraphQL operation name captured from live traffic.
  */
@@ -69,17 +71,12 @@ export interface FavoriteTweetOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface FavoriteTweetResponse {
-  /** Whether favorite response string exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface FavoriteTweetResponse
+  extends XTargetTweetActionResponseBase<FavoriteTweetOriginalResponse, FavoriteTweetGraphQLError> {
   /** Requested tweet id passed by caller. */
-  tweetId: string;
+  targetTweetId: string;
   /** Server response string, usually `Done`. */
   message?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: FavoriteTweetGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: FavoriteTweetOriginalResponse;
 }
 
 export interface FavoriteTweetData {

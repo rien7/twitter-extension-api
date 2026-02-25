@@ -1,4 +1,4 @@
-import type { XUserSummary } from '../../../src/shared/types';
+import type { XUserSummary, XUserTimelineResponseBase } from '../../../src/shared/types';
 
 /**
  * FollowList GraphQL operation name captured from live traffic.
@@ -131,18 +131,13 @@ export interface FollowListOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface FollowListResponse {
-  instructions: FollowListInstruction[];
-  entries: FollowListEntry[];
-  users: FollowListUserSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
-  errors?: FollowListGraphQLError[];
-  __original: FollowListOriginalResponse;
-}
+export interface FollowListResponse
+  extends XUserTimelineResponseBase<
+    FollowListInstruction,
+    FollowListEntry,
+    FollowListOriginalResponse,
+    FollowListGraphQLError
+  > {}
 
 export interface FollowListData {
   user?: FollowListUserBranch;

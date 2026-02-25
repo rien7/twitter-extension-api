@@ -34,7 +34,7 @@ describe('grokTranslation response normalization', () => {
     });
 
     expect(response.success).toBe(true);
-    expect(response.tweetId).toBe('42');
+    expect(response.targetTweetId).toBe('42');
     expect(response.dstLang).toBe('en');
     expect(response.contentType).toBe('POST');
     expect(response.translatedText).toBe("I'll put on the hardware and go~");

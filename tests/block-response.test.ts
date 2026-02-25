@@ -37,7 +37,7 @@ describe('block response normalization', () => {
     });
 
     expect(response.success).toBe(true);
-    expect(response.userId).toBe('1744935284939079681');
+    expect(response.targetUserId).toBe('1744935284939079681');
     expect(response.targetUser?.userId).toBe('1744935284939079681');
     expect(response.relationship.blocking).toBe(true);
     expect(response.__original).toEqual(rawPayload);

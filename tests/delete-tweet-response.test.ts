@@ -37,8 +37,8 @@ describe('deleteTweet response normalization', () => {
     });
 
     expect(response.success).toBe(true);
-    expect(response.tweetId).toBe('42');
-    expect(response.deletedTweetId).toBe('42');
+    expect(response.targetTweetId).toBe('42');
+    expect(response.resultTweetId).toBe('42');
     expect(response.__original).toEqual(rawPayload);
   });
 });

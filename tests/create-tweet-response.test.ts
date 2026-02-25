@@ -52,9 +52,9 @@ describe('createTweet response normalization', () => {
     expect(response.success).toBe(true);
     expect(response.requestedMode).toBe('quote');
     expect(response.mode).toBe('quote');
-    expect(response.tweetId).toBe('42');
-    expect(response.quotedTweet?.tweetId).toBe('42');
-    expect(response.inReplyToTweetId).toBeUndefined();
+    expect(response.resultTweet?.tweetId).toBe('42');
+    expect(response.resultTweet?.quotedTweet?.tweetId).toBe('42');
+    expect(response.resultTweet?.inReplyToTweetId).toBeUndefined();
     expect(response.__original).toEqual(rawPayload);
   });
 
@@ -101,8 +101,8 @@ describe('createTweet response normalization', () => {
     expect(response.success).toBe(true);
     expect(response.requestedMode).toBe('reply');
     expect(response.mode).toBe('reply');
-    expect(response.inReplyToTweetId).toBe('42');
-    expect(response.quotedTweet).toBeUndefined();
+    expect(response.resultTweet?.inReplyToTweetId).toBe('42');
+    expect(response.resultTweet?.quotedTweet).toBeUndefined();
     expect(response.__original).toEqual(rawPayload);
   });
 });

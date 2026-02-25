@@ -43,8 +43,8 @@ Type name: `CreateRetweetResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when mutation branch exists and GraphQL error list is empty.
-- `sourceTweetId`: Requested source tweet id from input.
-- `retweetId`: Server-returned retweet id from `data.create_retweet.retweet_results.result.rest_id` when available.
+- `targetTweetId`: requested source tweet id from input.
+- `resultTweetId`: server-returned retweet id from `data.create_retweet.retweet_results.result.rest_id` when available.
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL payload for compatibility/debugging.
 

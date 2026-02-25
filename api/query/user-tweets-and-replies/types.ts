@@ -1,6 +1,7 @@
 import type {
   XTweetStats,
   XTweetSummary,
+  XTweetTimelineResponseBase,
   XTweetViewerState,
   XUserSummary
 } from '../../../src/shared/types';
@@ -156,18 +157,14 @@ export interface UserTweetsAndRepliesOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface UserTweetsAndRepliesResponse {
-  instructions: UserTweetsAndRepliesInstruction[];
-  entries: UserTweetsAndRepliesEntry[];
-  tweets: UserTweetsAndRepliesTweetSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
+export interface UserTweetsAndRepliesResponse
+  extends XTweetTimelineResponseBase<
+    UserTweetsAndRepliesInstruction,
+    UserTweetsAndRepliesEntry,
+    UserTweetsAndRepliesOriginalResponse,
+    UserTweetsAndRepliesGraphQLError
+  > {
   conversationTweetIds: string[];
-  errors?: UserTweetsAndRepliesGraphQLError[];
-  __original: UserTweetsAndRepliesOriginalResponse;
 }
 
 export interface UserTweetsAndRepliesData {

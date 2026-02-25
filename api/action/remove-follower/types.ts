@@ -1,3 +1,5 @@
+import type { XTargetUserActionResponseBase } from '../../../src/shared/types';
+
 /**
  * RemoveFollower GraphQL operation name captured from live traffic.
  */
@@ -64,13 +66,10 @@ export interface RemoveFollowerOriginalResponse {
 /**
  * Normalized SDK response for remove-follower action.
  */
-export interface RemoveFollowerResponse {
-  success: boolean;
-  targetUserId: string;
+export interface RemoveFollowerResponse
+  extends XTargetUserActionResponseBase<RemoveFollowerOriginalResponse, RemoveFollowerGraphQLError> {
   resultType?: string;
   reason?: string;
-  errors?: RemoveFollowerGraphQLError[];
-  __original: RemoveFollowerOriginalResponse;
 }
 
 export interface RemoveFollowerData {

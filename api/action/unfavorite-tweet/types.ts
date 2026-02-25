@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * UnfavoriteTweet GraphQL operation name captured from live traffic.
  */
@@ -69,17 +71,12 @@ export interface UnfavoriteTweetOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface UnfavoriteTweetResponse {
-  /** Whether unfavorite response string exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface UnfavoriteTweetResponse
+  extends XTargetTweetActionResponseBase<UnfavoriteTweetOriginalResponse, UnfavoriteTweetGraphQLError> {
   /** Requested tweet id passed by caller. */
-  tweetId: string;
+  targetTweetId: string;
   /** Server response string, usually `Done`. */
   message?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: UnfavoriteTweetGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: UnfavoriteTweetOriginalResponse;
 }
 
 export interface UnfavoriteTweetData {

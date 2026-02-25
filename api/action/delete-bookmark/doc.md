@@ -42,7 +42,7 @@ Type name: `DeleteBookmarkResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when response message exists and GraphQL error list is empty.
-- `tweetId`: Requested tweet id from input.
+- `targetTweetId`: requested tweet id from input.
 - `message`: Server-returned status string from `data.tweet_bookmark_delete` (usually `Done`).
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL payload for compatibility/debugging.

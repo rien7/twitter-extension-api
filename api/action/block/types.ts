@@ -1,4 +1,8 @@
-import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTargetUserActionResponseBase,
+  XUserRelationshipSummary,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * REST form fields used by blocks/create endpoint.
@@ -58,13 +62,9 @@ export interface BlockOriginalResponse {
 /**
  * Normalized SDK response for block action.
  */
-export interface BlockResponse {
-  success: boolean;
-  userId: string;
-  targetUser?: BlockTargetUserSummary;
+export interface BlockResponse
+  extends XTargetUserActionResponseBase<BlockOriginalResponse, BlockApiError> {
   relationship: BlockRelationshipSummary;
-  errors?: BlockApiError[];
-  __original: BlockOriginalResponse;
 }
 
 export type BlockTargetUserSummary = XUserSummary;

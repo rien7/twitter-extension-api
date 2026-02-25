@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * DeleteRetweet GraphQL operation name captured from live traffic.
  */
@@ -73,17 +75,12 @@ export interface DeleteRetweetOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface DeleteRetweetResponse {
-  /** Whether mutation result branch exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface DeleteRetweetResponse
+  extends XTargetTweetActionResponseBase<DeleteRetweetOriginalResponse, DeleteRetweetGraphQLError> {
   /** Requested source tweet id passed by caller. */
-  sourceTweetId: string;
+  targetTweetId: string;
   /** Server-confirmed source tweet id when present. */
-  unretweetedTweetId?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: DeleteRetweetGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: DeleteRetweetOriginalResponse;
+  resultTweetId?: string;
 }
 
 export interface DeleteRetweetData {

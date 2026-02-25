@@ -22,7 +22,7 @@ export const NOTIFICATIONS_TIMELINE_DESC_TEXT = [
   '    - variablesOverride',
   '    - featuresOverride',
   'Pagination: count + cursor -> nextCursor / prevCursor / hasMore',
-  'Returns: notifications, tweets, entries, nextCursor, hasMore, errors'
+  'Returns: notifications, tweets, entries, nextCursor, prevCursor, hasMore, errors'
 ].join('\n');
 
 const NOTIFICATIONS_TIMELINE_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

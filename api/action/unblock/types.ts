@@ -1,4 +1,8 @@
-import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTargetUserActionResponseBase,
+  XUserRelationshipSummary,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * REST form fields used by blocks/destroy endpoint.
@@ -58,13 +62,9 @@ export interface UnblockOriginalResponse {
 /**
  * Normalized SDK response for unblock action.
  */
-export interface UnblockResponse {
-  success: boolean;
-  userId: string;
-  targetUser?: UnblockTargetUserSummary;
+export interface UnblockResponse
+  extends XTargetUserActionResponseBase<UnblockOriginalResponse, UnblockApiError> {
   relationship: UnblockRelationshipSummary;
-  errors?: UnblockApiError[];
-  __original: UnblockOriginalResponse;
 }
 
 export type UnblockTargetUserSummary = XUserSummary;

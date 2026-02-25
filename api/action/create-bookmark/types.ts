@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * CreateBookmark GraphQL operation name captured from live traffic.
  */
@@ -69,17 +71,12 @@ export interface CreateBookmarkOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface CreateBookmarkResponse {
-  /** Whether bookmark response string exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface CreateBookmarkResponse
+  extends XTargetTweetActionResponseBase<CreateBookmarkOriginalResponse, CreateBookmarkGraphQLError> {
   /** Requested tweet id passed by caller. */
-  tweetId: string;
+  targetTweetId: string;
   /** Server response string, usually `Done`. */
   message?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: CreateBookmarkGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: CreateBookmarkOriginalResponse;
 }
 
 export interface CreateBookmarkData {

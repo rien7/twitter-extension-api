@@ -13,7 +13,7 @@ export function normalizeGrokTranslationResponse(
 
   return {
     success: Boolean(translatedText) && !hasError,
-    tweetId: request.body.id,
+    targetTweetId: request.body.id,
     dstLang: request.body.dst_lang,
     contentType: payload.result?.content_type ?? request.body.content_type,
     translatedText,

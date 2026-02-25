@@ -43,7 +43,7 @@ Type name: `GrokTranslationResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when translated text exists and no error is reported.
-- `tweetId`: requested target id.
+- `targetTweetId`: requested target id.
 - `dstLang`: requested destination language.
 - `contentType`: translated content type (result fallback to request).
 - `translatedText`: translated text content.

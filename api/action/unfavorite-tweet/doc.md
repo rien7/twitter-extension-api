@@ -42,7 +42,7 @@ Type name: `UnfavoriteTweetResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when response message exists and GraphQL error list is empty.
-- `tweetId`: Requested tweet id from input.
+- `targetTweetId`: requested tweet id from input.
 - `message`: Server-returned status string from `data.unfavorite_tweet` (usually `Done`).
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL payload for compatibility/debugging.
@@ -77,6 +77,6 @@ const response = await unfavoriteTweet({
 
 ## Normalized response mapping
 - `success` summarizes mutation message presence + GraphQL error state.
-- `tweetId` reflects caller intent (requested target id).
+- `targetTweetId` reflects caller intent (requested target id).
 - `message` reflects server unfavorite result string (`Done` in current sample).
 - `__original` keeps full payload to preserve compatibility with unnormalized branches.

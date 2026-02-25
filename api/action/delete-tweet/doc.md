@@ -43,8 +43,8 @@ Type name: `DeleteTweetResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when mutation branch exists and GraphQL error list is empty.
-- `tweetId`: Requested tweet id from input.
-- `deletedTweetId`: Server-returned id from `data.delete_tweet.tweet_results.result.rest_id` when available.
+- `targetTweetId`: requested tweet id from input.
+- `resultTweetId`: server-returned id from `data.delete_tweet.tweet_results.result.rest_id` when available.
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL payload for compatibility/debugging.
 
@@ -79,6 +79,6 @@ const response = await deleteTweet({
 
 ## Normalized response mapping
 - `success` summarizes mutation branch presence + GraphQL error state.
-- `tweetId` reflects caller intent (requested target id).
-- `deletedTweetId` reflects server-confirmed deletion target when returned.
+- `targetTweetId` reflects caller intent (requested target id).
+- `resultTweetId` reflects server-confirmed deletion target when returned.
 - `__original` keeps full payload to preserve compatibility with unnormalized branches.

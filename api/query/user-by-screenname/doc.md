@@ -43,14 +43,10 @@ That means `screenName` always wins over `variablesOverride.screen_name`.
 Type name: `UserByScreenNameResponse`
 
 ### Normalized top-level fields
+- `found`: `true` when `user.result` resolves to a concrete user branch.
 - `resultType`: GraphQL `user.result.__typename`.
 - `user`: normalized `XUserSummary` (`userId`, `name`, `screenName`, `description`, `relationship`, ...).
-- `restId`: stable numeric user id string from `user.result.rest_id`.
-- `legacyId`: GraphQL legacy id branch (`user.result.id`).
-- `verified`: verification flag from `verification.verified` / `legacy.verified`.
-- `isBlueVerified`: premium blue verification flag.
-- `canDm`: whether viewer can DM this user.
-- `canMediaTag`: whether viewer can media-tag this user.
+- `capabilities`: normalized capability object (`isBlueVerified`, `canDm`, `canMediaTag`).
 - `unavailableReason`: populated when result type is unavailable.
 - `errors`: GraphQL errors array, if provided.
 - `__original`: full GraphQL payload.
@@ -59,6 +55,7 @@ Type name: `UserByScreenNameResponse`
 - `user.description` prefers `profile_bio.description`, fallback `legacy.description`.
 - relationship booleans are normalized into `user.relationship`.
 - profile image prefers `avatar.image_url`, fallback `legacy.profile_image_url_https`.
+- `capabilities` is mapped from user-level fields `is_blue_verified`, `dm_permissions.can_dm`, and `media_permissions.can_media_tag`.
 
 ## Minimal usage example
 

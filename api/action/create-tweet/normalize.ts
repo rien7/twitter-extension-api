@@ -21,20 +21,16 @@ export function normalizeCreateTweetResponse(
     ? toTweetSummary(quotedTweetResult)
     : toFallbackQuotedTweetSummary(legacy?.quoted_status_id_str);
   const mode = detectCreateTweetMode(legacy) ?? requestedMode;
-  const tweetId = result?.rest_id ?? legacy?.id_str;
+  const resultTweet = result ? toTweetSummary(result) : undefined;
+  if (resultTweet && quotedTweet) {
+    resultTweet.quotedTweet = quotedTweet;
+  }
 
   return {
     success: Boolean(result) && !payload.errors?.length,
     requestedMode,
     mode,
-    tweetId,
-    text: legacy?.full_text,
-    authorUserId: legacy?.user_id_str ?? result?.core?.user_results?.result?.rest_id,
-    conversationId: legacy?.conversation_id_str,
-    inReplyToTweetId: legacy?.in_reply_to_status_id_str ?? undefined,
-    inReplyToUserId: legacy?.in_reply_to_user_id_str ?? undefined,
-    inReplyToScreenName: legacy?.in_reply_to_screen_name ?? undefined,
-    quotedTweet,
+    resultTweet,
     errors: payload.errors,
     __original: payload
   };

@@ -73,6 +73,61 @@ export interface XTweetSummary {
   viewerState?: XTweetViewerState;
 }
 
+export interface XResponseBase<TOriginal = unknown, TError = unknown> {
+  errors?: TError[];
+  __original: TOriginal;
+}
+
+export interface XCursorPageSummary {
+  cursorTop?: string;
+  cursorBottom?: string;
+  nextCursor?: string;
+  prevCursor?: string;
+  hasMore: boolean;
+}
+
+export interface XActionResponseBase<TOriginal = unknown, TError = unknown>
+  extends XResponseBase<TOriginal, TError> {
+  success: boolean;
+}
+
+export interface XTargetUserActionResponseBase<TOriginal = unknown, TError = unknown>
+  extends XActionResponseBase<TOriginal, TError> {
+  targetUserId: string;
+  targetUser?: XUserSummary;
+  relationship?: XUserRelationshipSummary;
+}
+
+export interface XTargetTweetActionResponseBase<TOriginal = unknown, TError = unknown>
+  extends XActionResponseBase<TOriginal, TError> {
+  targetTweetId: string;
+  targetTweet?: XTweetSummary;
+}
+
+export interface XTweetTimelineResponseBase<
+  TInstruction = unknown,
+  TEntry = unknown,
+  TOriginal = unknown,
+  TError = unknown
+> extends XResponseBase<TOriginal, TError>,
+    XCursorPageSummary {
+  instructions: TInstruction[];
+  entries: TEntry[];
+  tweets: XTweetSummary[];
+}
+
+export interface XUserTimelineResponseBase<
+  TInstruction = unknown,
+  TEntry = unknown,
+  TOriginal = unknown,
+  TError = unknown
+> extends XResponseBase<TOriginal, TError>,
+    XCursorPageSummary {
+  instructions: TInstruction[];
+  entries: TEntry[];
+  users: XUserSummary[];
+}
+
 export interface XApiMatchRule {
   method?: string;
   path?: string;

@@ -1,5 +1,6 @@
 import type {
   XTweetSummary,
+  XTweetTimelineResponseBase,
   XTweetViewerState,
   XUserSummary
 } from '../../../src/shared/types';
@@ -127,22 +128,18 @@ export interface NotificationsTimelineOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface NotificationsTimelineResponse {
+export interface NotificationsTimelineResponse
+  extends XTweetTimelineResponseBase<
+    NotificationsTimelineInstruction,
+    NotificationsTimelineEntry,
+    NotificationsTimelineOriginalResponse,
+    NotificationsTimelineGraphQLError
+  > {
   timelineId?: string;
   viewerUserId?: string;
-  instructions: NotificationsTimelineInstruction[];
-  entries: NotificationsTimelineEntry[];
   notifications: NotificationsTimelineNotificationSummary[];
-  tweets: NotificationsTimelineTweetSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
   unreadMarkerSortIndex?: string;
   clearedUnreadState: boolean;
-  errors?: NotificationsTimelineGraphQLError[];
-  __original: NotificationsTimelineOriginalResponse;
 }
 
 export interface NotificationsTimelineData {

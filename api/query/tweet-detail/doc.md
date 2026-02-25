@@ -49,6 +49,9 @@ Type name: `TweetDetailResponse`
 - `focalTweet`: Summary matching `detailId` when found.
 - `cursorTop`: Top cursor value if present.
 - `cursorBottom`: Bottom cursor value if present.
+- `nextCursor`: Standardized next-page cursor (same value as `cursorBottom`).
+- `prevCursor`: Standardized previous-page cursor (same value as `cursorTop`).
+- `hasMore`: Whether next-page cursor exists.
 - `conversationTweetIds`: Conversation-level tweet id set from metadata and extracted tweets.
 - `errors`: GraphQL errors array (if provided).
 - `__original`: Full GraphQL response payload for compatibility/debugging.

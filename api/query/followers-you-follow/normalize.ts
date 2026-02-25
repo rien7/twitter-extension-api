@@ -15,6 +15,8 @@ export function normalizeFollowersYouFollowResponse(
   return {
     users,
     totalCount: resolveTotalCount(payload.total_count, users.length),
+    cursorTop: prevCursor,
+    cursorBottom: nextCursor,
     nextCursor,
     prevCursor,
     hasMore: Boolean(nextCursor),

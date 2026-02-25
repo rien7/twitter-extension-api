@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * CreateRetweet GraphQL operation name captured from live traffic.
  */
@@ -73,17 +75,12 @@ export interface CreateRetweetOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface CreateRetweetResponse {
-  /** Whether mutation result branch exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface CreateRetweetResponse
+  extends XTargetTweetActionResponseBase<CreateRetweetOriginalResponse, CreateRetweetGraphQLError> {
   /** Requested source tweet id passed by caller. */
-  sourceTweetId: string;
+  targetTweetId: string;
   /** Server-created retweet id when present. */
-  retweetId?: string;
-  /** GraphQL errors array (if provided). */
-  errors?: CreateRetweetGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: CreateRetweetOriginalResponse;
+  resultTweetId?: string;
 }
 
 export interface CreateRetweetData {

@@ -18,7 +18,7 @@ export const GROK_TRANSLATION_DESC_TEXT = [
   '    - endpoint',
   '    - headers',
   '    - bodyOverride',
-  'Returns: success, tweetId, dstLang, contentType, translatedText, entities, errors'
+  'Returns: success, targetTweetId, dstLang, contentType, translatedText, entities, errors'
 ].join('\n');
 
 const GROK_TRANSLATION_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

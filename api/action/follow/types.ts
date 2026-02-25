@@ -1,4 +1,8 @@
-import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTargetUserActionResponseBase,
+  XUserRelationshipSummary,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * REST form fields used by friendships/create endpoint.
@@ -71,13 +75,9 @@ export interface FollowOriginalResponse {
 /**
  * Normalized SDK response for follow action.
  */
-export interface FollowResponse {
-  success: boolean;
-  userId: string;
-  targetUser?: FollowTargetUserSummary;
+export interface FollowResponse
+  extends XTargetUserActionResponseBase<FollowOriginalResponse, FollowApiError> {
   relationship: FollowRelationshipSummary;
-  errors?: FollowApiError[];
-  __original: FollowOriginalResponse;
 }
 
 export type FollowTargetUserSummary = XUserSummary;

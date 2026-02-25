@@ -15,14 +15,16 @@ export function normalizeUserByScreenNameResponse(
   const unavailable = asUserByScreenNameUnavailableUser(result);
 
   return {
+    found: Boolean(user),
     resultType: getResultType(result),
     user: user ? toUserSummary(user) : undefined,
-    restId: user?.rest_id,
-    legacyId: user?.id,
-    verified: user?.verification?.verified ?? user?.legacy?.verified,
-    isBlueVerified: user?.is_blue_verified,
-    canDm: user?.dm_permissions?.can_dm,
-    canMediaTag: user?.media_permissions?.can_media_tag,
+    capabilities: user
+      ? {
+        isBlueVerified: user.is_blue_verified,
+        canDm: user.dm_permissions?.can_dm,
+        canMediaTag: user.media_permissions?.can_media_tag
+      }
+      : undefined,
     unavailableReason:
       unavailable?.reason ?? unavailable?.message ?? unavailable?.unavailable_message,
     errors: payload.errors,

@@ -1,4 +1,8 @@
-import type { XUserSummary } from '../../../src/shared/types';
+import type {
+  XCursorPageSummary,
+  XResponseBase,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * URL query params used by friends/following/list endpoint.
@@ -107,12 +111,9 @@ export type FollowersYouFollowUserSummary = XUserSummary;
 /**
  * Normalized SDK response for followers-you-follow query.
  */
-export interface FollowersYouFollowResponse {
+export interface FollowersYouFollowResponse
+  extends XResponseBase<FollowersYouFollowOriginalResponse, FollowersYouFollowApiError>,
+    XCursorPageSummary {
   users: FollowersYouFollowUserSummary[];
   totalCount: number;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
-  errors?: FollowersYouFollowApiError[];
-  __original: FollowersYouFollowOriginalResponse;
 }

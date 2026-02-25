@@ -47,6 +47,7 @@ Type name: `FollowersYouFollowResponse`
 ### Normalized top-level fields
 - `users`: summarized overlap users for immediate UI rendering.
 - `totalCount`: server `total_count` (falls back to current page length when absent).
+- `cursorTop` / `cursorBottom`: raw cursor aliases for compatibility (`cursorTop = prevCursor`, `cursorBottom = nextCursor`).
 - `nextCursor` / `prevCursor` / `hasMore`: unified cursor pagination fields.
 - `errors`: REST error array when provided.
 - `__original`: full REST payload.

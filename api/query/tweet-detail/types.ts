@@ -1,6 +1,7 @@
 import type {
   XTweetStats,
   XTweetSummary,
+  XTweetTimelineResponseBase,
   XTweetViewerState,
   XUserSummary
 } from '../../../src/shared/types';
@@ -155,16 +156,15 @@ export interface TweetDetailOriginalResponse {
  * - Frequently-used branches are lifted to top-level fields.
  * - Full raw payload is preserved under `__original`.
  */
-export interface TweetDetailResponse {
-  instructions: TweetDetailInstruction[];
-  entries: TweetDetailEntry[];
-  tweets: TweetDetailTweetSummary[];
+export interface TweetDetailResponse
+  extends XTweetTimelineResponseBase<
+    TweetDetailInstruction,
+    TweetDetailEntry,
+    TweetDetailOriginalResponse,
+    TweetDetailGraphQLError
+  > {
   focalTweet?: TweetDetailTweetSummary;
-  cursorTop?: string;
-  cursorBottom?: string;
   conversationTweetIds: string[];
-  errors?: TweetDetailGraphQLError[];
-  __original: TweetDetailOriginalResponse;
 }
 
 export interface TweetDetailData {

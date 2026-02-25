@@ -20,7 +20,7 @@ export const DELETE_BOOKMARK_DESC_TEXT = [
   '    - queryId',
   '    - operationName',
   '    - variablesOverride',
-  'Returns: success, tweetId, message, errors'
+  'Returns: success, targetTweetId, message, errors'
 ].join('\n');
 
 const DELETE_BOOKMARK_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

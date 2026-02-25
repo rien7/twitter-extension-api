@@ -1,4 +1,4 @@
-import type { XTweetSummary } from '../../../src/shared/types';
+import type { XActionResponseBase, XTweetSummary } from '../../../src/shared/types';
 
 /**
  * CreateTweet GraphQL operation name captured from live traffic.
@@ -207,33 +207,14 @@ export interface CreateTweetOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface CreateTweetResponse {
-  /** Whether mutation result branch exists and no GraphQL errors were returned. */
-  success: boolean;
+export interface CreateTweetResponse
+  extends XActionResponseBase<CreateTweetOriginalResponse, CreateTweetGraphQLError> {
   /** Publish mode requested by caller after defaults were resolved. */
   requestedMode: CreateTweetMode;
   /** Publish mode detected from response payload. */
   mode: CreateTweetMode;
-  /** Server-created tweet id. */
-  tweetId?: string;
-  /** Canonical text from response legacy.full_text. */
-  text?: string;
-  /** Author user id for created tweet when present. */
-  authorUserId?: string;
-  /** Conversation id when present. */
-  conversationId?: string;
-  /** Target tweet id when this is a reply. */
-  inReplyToTweetId?: string;
-  /** Target user id when this is a reply. */
-  inReplyToUserId?: string;
-  /** Target screen name when this is a reply. */
-  inReplyToScreenName?: string;
-  /** Quoted tweet summary when this is a quote tweet. */
-  quotedTweet?: XTweetSummary;
-  /** GraphQL errors array (if provided). */
-  errors?: CreateTweetGraphQLError[];
-  /** Full server payload for compatibility/debugging. */
-  __original: CreateTweetOriginalResponse;
+  /** Created tweet summary extracted from mutation result branch. */
+  resultTweet?: XTweetSummary;
 }
 
 export interface CreateTweetData {

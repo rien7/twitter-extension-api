@@ -13,7 +13,7 @@ export const UNFOLLOW_DESC_TEXT = [
   '    - endpoint',
   '    - headers',
   '    - formOverride',
-  'Returns: success, userId, targetUser, relationship, errors'
+  'Returns: success, targetUserId, targetUser, relationship, errors'
 ].join('\n');
 
 const UNFOLLOW_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

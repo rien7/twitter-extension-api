@@ -1,3 +1,5 @@
+import type { XTargetTweetActionResponseBase } from '../../../src/shared/types';
+
 /**
  * Content type label used by Grok translation endpoint.
  */
@@ -83,14 +85,12 @@ export interface GrokTranslationOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface GrokTranslationResponse {
-  success: boolean;
-  tweetId: string;
+export interface GrokTranslationResponse
+  extends XTargetTweetActionResponseBase<GrokTranslationOriginalResponse, GrokTranslationApiError> {
+  targetTweetId: string;
   dstLang: string;
   contentType: string;
   translatedText?: string;
   entities: GrokTranslationEntityObject;
   errorMessage?: string;
-  errors?: GrokTranslationApiError[];
-  __original: GrokTranslationOriginalResponse;
 }

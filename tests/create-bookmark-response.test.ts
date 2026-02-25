@@ -31,7 +31,7 @@ describe('createBookmark response normalization', () => {
     });
 
     expect(response.success).toBe(true);
-    expect(response.tweetId).toBe('42');
+    expect(response.targetTweetId).toBe('42');
     expect(response.message).toBe('Done');
     expect(response.__original).toEqual(rawPayload);
   });

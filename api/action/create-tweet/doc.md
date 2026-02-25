@@ -62,12 +62,8 @@ Type name: `CreateTweetResponse`
 - `success`: `true` when mutation result exists and no GraphQL error list is returned.
 - `requestedMode`: mode resolved from request input.
 - `mode`: mode detected from response (`legacy.in_reply_to_status_id_str` / `legacy.is_quote_status`) with fallback to `requestedMode`.
-- `tweetId`: created tweet id from `result.rest_id` (fallback `legacy.id_str`).
-- `text`: canonical text from `legacy.full_text`.
-- `authorUserId`: created tweet author id.
-- `conversationId`: conversation id from `legacy.conversation_id_str`.
-- `inReplyToTweetId`, `inReplyToUserId`, `inReplyToScreenName`: reply linkage fields.
-- `quotedTweet`: quoted tweet summary (`XTweetSummary`), at least includes `tweetId` when available.
+- `resultTweet`: normalized `XTweetSummary` for the created tweet (when server returns result branch).
+- `resultTweet.quotedTweet`: normalized quoted tweet summary (`XTweetSummary`) when quote linkage exists.
 - `errors`: GraphQL errors array when provided.
 - `__original`: full GraphQL payload.
 

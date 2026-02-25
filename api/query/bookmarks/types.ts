@@ -1,4 +1,8 @@
-import type { XTweetSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTweetSummary,
+  XTweetTimelineResponseBase,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * Bookmarks GraphQL operation name captured from live traffic.
@@ -123,18 +127,14 @@ export interface BookmarksOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface BookmarksResponse {
-  instructions: BookmarksInstruction[];
-  entries: BookmarksEntry[];
-  tweets: BookmarksTweetSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
+export interface BookmarksResponse
+  extends XTweetTimelineResponseBase<
+    BookmarksInstruction,
+    BookmarksEntry,
+    BookmarksOriginalResponse,
+    BookmarksGraphQLError
+  > {
   conversationTweetIds: string[];
-  errors?: BookmarksGraphQLError[];
-  __original: BookmarksOriginalResponse;
 }
 
 export interface BookmarksData {

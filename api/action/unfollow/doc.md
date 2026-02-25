@@ -41,7 +41,7 @@ Type name: `UnfollowResponse`
 
 ### Normalized top-level fields
 - `success`: `true` when server returns target user id and no REST errors.
-- `userId`: requested target id from input.
+- `targetUserId`: requested target id from input.
 - `targetUser`: summary (`userId`, `name`, `screenName`, `description`, `relationship`).
 - `relationship`: follow/block/mute related booleans from server payload.
 - `errors`: REST error array when provided.

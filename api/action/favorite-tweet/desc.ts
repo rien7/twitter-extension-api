@@ -20,7 +20,7 @@ export const FAVORITE_TWEET_DESC_TEXT = [
   '    - queryId',
   '    - operationName',
   '    - variablesOverride',
-  'Returns: success, tweetId, message, errors'
+  'Returns: success, targetTweetId, message, errors'
 ].join('\n');
 
 const FAVORITE_TWEET_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

@@ -1,4 +1,9 @@
-import type { XTweetStats, XTweetSummary, XUserSummary } from '../../../src/shared/types';
+import type {
+  XTweetStats,
+  XTweetSummary,
+  XTweetTimelineResponseBase,
+  XUserSummary
+} from '../../../src/shared/types';
 
 /**
  * HomeLatestTimeline GraphQL operation name captured from live traffic.
@@ -134,18 +139,14 @@ export interface HomeLatestTimelineOriginalResponse {
  * - Frequently-used branches are lifted to top-level fields.
  * - Full raw payload is preserved under `__original`.
  */
-export interface HomeLatestTimelineResponse {
-  instructions: HomeLatestTimelineInstruction[];
-  entries: HomeLatestTimelineEntry[];
-  tweets: HomeLatestTimelineTweetSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
+export interface HomeLatestTimelineResponse
+  extends XTweetTimelineResponseBase<
+    HomeLatestTimelineInstruction,
+    HomeLatestTimelineEntry,
+    HomeLatestTimelineOriginalResponse,
+    HomeLatestTimelineGraphQLError
+  > {
   scribePage?: string;
-  errors?: HomeLatestTimelineGraphQLError[];
-  __original: HomeLatestTimelineOriginalResponse;
 }
 
 export interface HomeLatestTimelineData {

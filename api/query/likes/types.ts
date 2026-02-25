@@ -1,6 +1,7 @@
 import type {
   XTweetStats,
   XTweetSummary,
+  XTweetTimelineResponseBase,
   XTweetViewerState,
   XUserSummary
 } from '../../../src/shared/types';
@@ -161,18 +162,14 @@ export interface LikesOriginalResponse {
 /**
  * Normalized SDK response for day-to-day usage.
  */
-export interface LikesResponse {
-  instructions: LikesInstruction[];
-  entries: LikesEntry[];
-  tweets: LikesTweetSummary[];
-  cursorTop?: string;
-  cursorBottom?: string;
-  nextCursor?: string;
-  prevCursor?: string;
-  hasMore: boolean;
+export interface LikesResponse
+  extends XTweetTimelineResponseBase<
+    LikesInstruction,
+    LikesEntry,
+    LikesOriginalResponse,
+    LikesGraphQLError
+  > {
   conversationTweetIds: string[];
-  errors?: LikesGraphQLError[];
-  __original: LikesOriginalResponse;
 }
 
 export interface LikesData {

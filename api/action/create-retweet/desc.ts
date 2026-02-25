@@ -21,7 +21,7 @@ export const CREATE_RETWEET_DESC_TEXT = [
   '    - operationName',
   '    - darkRequest',
   '    - variablesOverride',
-  'Returns: success, sourceTweetId, retweetId, errors'
+  'Returns: success, targetTweetId, resultTweetId, errors'
 ].join('\n');
 
 const CREATE_RETWEET_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

@@ -9,7 +9,7 @@ export function normalizeDeleteBookmarkResponse(
 
   return {
     success,
-    tweetId: requestedTweetId,
+    targetTweetId: requestedTweetId,
     message,
     errors: payload.errors,
     __original: payload

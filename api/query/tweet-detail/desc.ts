@@ -24,7 +24,7 @@ export const TWEET_DETAIL_DESC_TEXT = [
   '    - variablesOverride',
   '    - featuresOverride',
   '    - fieldTogglesOverride',
-  'Returns: focalTweet, tweets, entries, conversationTweetIds, cursorTop, cursorBottom, errors'
+  'Returns: focalTweet, tweets, entries, nextCursor, prevCursor, hasMore, errors'
 ].join('\n');
 
 const TWEET_DETAIL_DEFAULT_PARAMS_TEMPLATE = Object.freeze({

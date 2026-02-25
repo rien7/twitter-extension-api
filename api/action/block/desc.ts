@@ -13,7 +13,7 @@ export const BLOCK_DESC_TEXT = [
   '    - endpoint',
   '    - headers',
   '    - formOverride',
-  'Returns: success, userId, targetUser, relationship, errors'
+  'Returns: success, targetUserId, targetUser, relationship, errors'
 ].join('\n');
 
 const BLOCK_DEFAULT_PARAMS_TEMPLATE = Object.freeze({
