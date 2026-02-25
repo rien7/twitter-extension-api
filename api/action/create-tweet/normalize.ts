@@ -1,3 +1,4 @@
+import type { XTweetSummary } from '../../../src/shared/types';
 import type {
   CreateTweetLegacy,
   CreateTweetMode,
@@ -15,6 +16,10 @@ export function normalizeCreateTweetResponse(
   const rawResult = payload.data?.create_tweet?.tweet_results?.result;
   const result = unwrapCreateTweetResult(rawResult);
   const legacy = result?.legacy;
+  const quotedTweetResult = unwrapCreateTweetResult(result?.quoted_status_result?.result);
+  const quotedTweet = quotedTweetResult
+    ? toTweetSummary(quotedTweetResult)
+    : toFallbackQuotedTweetSummary(legacy?.quoted_status_id_str);
   const mode = detectCreateTweetMode(legacy) ?? requestedMode;
   const tweetId = result?.rest_id ?? legacy?.id_str;
 
@@ -29,9 +34,46 @@ export function normalizeCreateTweetResponse(
     inReplyToTweetId: legacy?.in_reply_to_status_id_str ?? undefined,
     inReplyToUserId: legacy?.in_reply_to_user_id_str ?? undefined,
     inReplyToScreenName: legacy?.in_reply_to_screen_name ?? undefined,
-    quotedTweetId: legacy?.quoted_status_id_str ?? undefined,
+    quotedTweet,
     errors: payload.errors,
     __original: payload
+  };
+}
+
+function toTweetSummary(result: CreateTweetTweetResult): XTweetSummary {
+  const legacy = result.legacy;
+  const nestedQuotedTweet = toFallbackQuotedTweetSummary(legacy?.quoted_status_id_str);
+
+  return {
+    tweetId: result.rest_id ?? legacy?.id_str,
+    conversationId: legacy?.conversation_id_str ?? undefined,
+    fullText: legacy?.full_text,
+    inReplyToTweetId: legacy?.in_reply_to_status_id_str ?? undefined,
+    inReplyToUserId: legacy?.in_reply_to_user_id_str ?? undefined,
+    inReplyToScreenName: legacy?.in_reply_to_screen_name ?? undefined,
+    quotedTweet: nestedQuotedTweet,
+    user: toAuthorSummary(legacy?.user_id_str, result.core?.user_results?.result?.rest_id)
+  };
+}
+
+function toFallbackQuotedTweetSummary(tweetId?: string | null): XTweetSummary | undefined {
+  if (!tweetId) {
+    return undefined;
+  }
+
+  return {
+    tweetId
+  };
+}
+
+function toAuthorSummary(legacyUserId?: string, coreUserId?: string): XTweetSummary['user'] {
+  const userId = legacyUserId ?? coreUserId;
+  if (!userId) {
+    return undefined;
+  }
+
+  return {
+    userId
   };
 }
 

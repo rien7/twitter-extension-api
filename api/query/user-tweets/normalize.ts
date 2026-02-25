@@ -213,9 +213,9 @@ function buildTweetSummary(
     conversationId: tweet.legacy?.conversation_id_str,
     inReplyToTweetId: tweet.legacy?.in_reply_to_status_id_str,
     inReplyToUserId: tweet.legacy?.in_reply_to_user_id_str,
-    viewCount: tweet.views?.count,
     user: userSummary,
     stats: {
+      viewCount: tweet.views?.count,
       replyCount: tweet.legacy?.reply_count,
       retweetCount: tweet.legacy?.retweet_count,
       likeCount: tweet.legacy?.favorite_count,

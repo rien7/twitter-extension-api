@@ -1,3 +1,5 @@
+import type { XTweetStats, XTweetSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * HomeLatestTimeline GraphQL operation name captured from live traffic.
  */
@@ -350,40 +352,17 @@ export interface HomeLatestTimelineUserLegacy {
 /**
  * Lifted top-level author fields for easier consumption.
  */
-export interface HomeLatestTimelineUserSummary {
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  verified?: boolean;
-  profileImageUrl?: string;
-}
+export type HomeLatestTimelineUserSummary = XUserSummary;
 
 /**
  * Lifted top-level engagement metrics for easier consumption.
  */
-export interface HomeLatestTimelineTweetStats {
-  replyCount?: number;
-  retweetCount?: number;
-  likeCount?: number;
-  quoteCount?: number;
-  bookmarkCount?: number;
-}
+export type HomeLatestTimelineTweetStats = XTweetStats;
 
 /**
  * Normalized tweet shape extracted from timeline entries.
  */
-export interface HomeLatestTimelineTweetSummary {
-  entryId: string;
-  sortIndex?: string;
-  tweetId?: string;
-  fullText?: string;
-  createdAt?: string;
-  language?: string;
-  source?: string;
-  viewCount?: string;
-  user?: HomeLatestTimelineUserSummary;
-  stats?: HomeLatestTimelineTweetStats;
-}
+export type HomeLatestTimelineTweetSummary = XTweetSummary;
 
 export interface HomeLatestTimelineTweetTombstone {
   __typename?: 'TweetTombstone' | string;

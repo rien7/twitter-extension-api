@@ -59,7 +59,7 @@ Type name: `HomeLatestTimelineResponse`
 - `fullText`: Tweet text content (`legacy.full_text`).
 - `user`: Author summary (`userId`, `name`, `screenName`, `verified`, `profileImageUrl`).
 - `stats`: Engagement summary (`replyCount`, `retweetCount`, `likeCount`, `quoteCount`, `bookmarkCount`).
-- `viewCount`: View count string.
+- `stats.viewCount`: View count string.
 - `entryId` / `sortIndex`: Timeline positioning metadata.
 
 ### Error handling

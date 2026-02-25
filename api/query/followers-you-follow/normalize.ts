@@ -35,12 +35,14 @@ function toUserSummary(user: FollowersYouFollowRawUser): FollowersYouFollowUserS
     protected: user.protected,
     followersCount: user.followers_count,
     friendsCount: user.friends_count,
-    following: user.following,
-    followedBy: user.followed_by,
-    blocking: user.blocking,
-    blockedBy: user.blocked_by,
-    muting: user.muting,
-    wantRetweets: user.want_retweets
+    relationship: {
+      following: user.following,
+      followedBy: user.followed_by,
+      blocking: user.blocking,
+      blockedBy: user.blocked_by,
+      muting: user.muting,
+      wantRetweets: user.want_retweets
+    }
   };
 }
 

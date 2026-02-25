@@ -1,3 +1,10 @@
+import type {
+  XTweetStats,
+  XTweetSummary,
+  XTweetViewerState,
+  XUserSummary
+} from '../../../src/shared/types';
+
 /**
  * UserTweets GraphQL operation name captured from live traffic.
  */
@@ -373,41 +380,10 @@ export interface UserTweetsUserLegacy {
   [key: string]: unknown;
 }
 
-export interface UserTweetsTweetSummary {
-  entryId: string;
-  sortIndex?: string;
-  tweetId?: string;
-  fullText?: string;
-  createdAt?: string;
-  language?: string;
-  source?: string;
-  conversationId?: string;
-  inReplyToTweetId?: string;
-  inReplyToUserId?: string;
-  viewCount?: string;
-  user?: UserTweetsUserSummary;
-  stats?: UserTweetsTweetStats;
-  viewerState?: UserTweetsViewerState;
-}
+export type UserTweetsTweetSummary = XTweetSummary;
 
-export interface UserTweetsUserSummary {
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  verified?: boolean;
-  profileImageUrl?: string;
-}
+export type UserTweetsUserSummary = XUserSummary;
 
-export interface UserTweetsTweetStats {
-  replyCount?: number;
-  retweetCount?: number;
-  likeCount?: number;
-  quoteCount?: number;
-  bookmarkCount?: number;
-}
+export type UserTweetsTweetStats = XTweetStats;
 
-export interface UserTweetsViewerState {
-  bookmarked?: boolean;
-  favorited?: boolean;
-  retweeted?: boolean;
-}
+export type UserTweetsViewerState = XTweetViewerState;

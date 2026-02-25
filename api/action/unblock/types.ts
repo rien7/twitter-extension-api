@@ -1,3 +1,5 @@
+import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * REST form fields used by blocks/destroy endpoint.
  */
@@ -65,17 +67,6 @@ export interface UnblockResponse {
   __original: UnblockOriginalResponse;
 }
 
-export interface UnblockTargetUserSummary {
-  id?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-}
+export type UnblockTargetUserSummary = XUserSummary;
 
-export interface UnblockRelationshipSummary {
-  following?: boolean;
-  followedBy?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-}
+export type UnblockRelationshipSummary = XUserRelationshipSummary;

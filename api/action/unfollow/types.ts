@@ -1,3 +1,5 @@
+import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * REST form fields used by friendships/destroy endpoint.
  */
@@ -78,18 +80,6 @@ export interface UnfollowResponse {
   __original: UnfollowOriginalResponse;
 }
 
-export interface UnfollowTargetUserSummary {
-  id?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-}
+export type UnfollowTargetUserSummary = XUserSummary;
 
-export interface UnfollowRelationshipSummary {
-  following?: boolean;
-  followedBy?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-  wantRetweets?: boolean;
-}
+export type UnfollowRelationshipSummary = XUserRelationshipSummary;

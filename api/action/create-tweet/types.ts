@@ -1,3 +1,5 @@
+import type { XTweetSummary } from '../../../src/shared/types';
+
 /**
  * CreateTweet GraphQL operation name captured from live traffic.
  */
@@ -226,8 +228,8 @@ export interface CreateTweetResponse {
   inReplyToUserId?: string;
   /** Target screen name when this is a reply. */
   inReplyToScreenName?: string;
-  /** Target tweet id when this is a quote tweet. */
-  quotedTweetId?: string;
+  /** Quoted tweet summary when this is a quote tweet. */
+  quotedTweet?: XTweetSummary;
   /** GraphQL errors array (if provided). */
   errors?: CreateTweetGraphQLError[];
   /** Full server payload for compatibility/debugging. */

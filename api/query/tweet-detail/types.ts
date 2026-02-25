@@ -1,3 +1,10 @@
+import type {
+  XTweetStats,
+  XTweetSummary,
+  XTweetViewerState,
+  XUserSummary
+} from '../../../src/shared/types';
+
 /**
  * TweetDetail GraphQL operation name captured from live traffic.
  */
@@ -459,52 +466,22 @@ export interface TweetDetailUserLegacy {
 /**
  * Lifted top-level author fields for easier consumption.
  */
-export interface TweetDetailUserSummary {
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  verified?: boolean;
-  profileImageUrl?: string;
-}
+export type TweetDetailUserSummary = XUserSummary;
 
 /**
  * Lifted top-level engagement metrics for easier consumption.
  */
-export interface TweetDetailTweetStats {
-  replyCount?: number;
-  retweetCount?: number;
-  likeCount?: number;
-  quoteCount?: number;
-  bookmarkCount?: number;
-}
+export type TweetDetailTweetStats = XTweetStats;
 
 /**
  * Lifted top-level viewer state for easier consumption.
  */
-export interface TweetDetailViewerState {
-  bookmarked?: boolean;
-  favorited?: boolean;
-  retweeted?: boolean;
-}
+export type TweetDetailViewerState = XTweetViewerState;
 
 /**
  * Normalized tweet shape extracted from detail timeline branches.
  */
-export interface TweetDetailTweetSummary {
-  entryId: string;
-  sortIndex?: string;
-  tweetId?: string;
-  fullText?: string;
-  createdAt?: string;
-  language?: string;
-  source?: string;
-  inReplyToTweetId?: string;
-  inReplyToUserId?: string;
-  viewCount?: string;
-  user?: TweetDetailUserSummary;
-  stats?: TweetDetailTweetStats;
-  viewerState?: TweetDetailViewerState;
-}
+export type TweetDetailTweetSummary = XTweetSummary;
 
 export interface TweetDetailUserEntities {
   description?: {

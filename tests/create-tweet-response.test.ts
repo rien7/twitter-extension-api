@@ -53,7 +53,7 @@ describe('createTweet response normalization', () => {
     expect(response.requestedMode).toBe('quote');
     expect(response.mode).toBe('quote');
     expect(response.tweetId).toBe('42');
-    expect(response.quotedTweetId).toBe('42');
+    expect(response.quotedTweet?.tweetId).toBe('42');
     expect(response.inReplyToTweetId).toBeUndefined();
     expect(response.__original).toEqual(rawPayload);
   });
@@ -102,7 +102,7 @@ describe('createTweet response normalization', () => {
     expect(response.requestedMode).toBe('reply');
     expect(response.mode).toBe('reply');
     expect(response.inReplyToTweetId).toBe('42');
-    expect(response.quotedTweetId).toBeUndefined();
+    expect(response.quotedTweet).toBeUndefined();
     expect(response.__original).toEqual(rawPayload);
   });
 });

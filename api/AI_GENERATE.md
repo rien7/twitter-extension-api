@@ -178,6 +178,23 @@ Returns: tweets, conversationTweetIds, nextCursor, hasMore, errors
    - `prevCursor?: string`
    - `hasMore: boolean`
 
+### 8.1 Tweet/User 统一结构转换规则（强制）
+
+所有“推文/用户”归一化输出必须复用 `src/shared/types.ts`：
+1. 推文对象统一为 `XTweetSummary`。
+2. 用户对象统一为 `XUserSummary`。
+3. 禁止在 API 私有类型里重复发明另一套同语义字段；如需本地命名，使用 type alias 到共享类型。
+4. 关系字段统一放在 `XUserSummary.relationship`：
+   - `following`
+   - `followedBy`
+   - `blocking`
+   - `blockedBy`
+   - `muting`
+   - `wantRetweets`
+5. 浏览量统一放到 `XTweetSummary.stats.viewCount`，不要再输出根层 `viewCount`。
+6. 引用推文统一使用 `XTweetSummary.quotedTweet`，不要再输出 `quotedTweetId`。
+7. action 场景中 `targetUser` 也必须按 `XUserSummary` 输出，主键字段统一使用 `userId`（不是 `id`）。
+
 ## 9. 导出层（index.ts）与 JSDoc
 
 `index.ts` 必须：

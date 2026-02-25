@@ -141,9 +141,9 @@ function buildTweetSummary(
     createdAt: tweet.legacy?.created_at,
     language: tweet.legacy?.lang,
     source: tweet.source,
-    viewCount: tweet.views?.count,
     user: userSummary,
     stats: {
+      viewCount: tweet.views?.count,
       replyCount: tweet.legacy?.reply_count,
       retweetCount: tweet.legacy?.retweet_count,
       likeCount: tweet.legacy?.favorite_count,

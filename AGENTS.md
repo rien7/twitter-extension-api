@@ -50,6 +50,13 @@ Use it for semantics only, not as direct copy target.
 15. Unknown API GraphQL fingerprinting must normalize tweet-id-like variables before hashing.
    - Before computing `variablesShapeHash`, replace tweet-id-like variable values with `42`.
    - This avoids duplicate unknown records for the same operation caused only by different tweet ids.
+16. All normalized tweet/user outputs must use shared summary types from `src/shared/types.ts`.
+   - Use `XTweetSummary` for tweet-like normalized objects.
+   - Use `XUserSummary` for user-like normalized objects.
+   - Put relationship booleans under `user.relationship` (not flattened on user root).
+   - Put tweet view count under `tweet.stats.viewCount` (not top-level `tweet.viewCount`).
+   - Quoted tweet linkage must use `quotedTweet?: XTweetSummary` (not `quotedTweetId`).
+   - Action `targetUser` summary must use `userId` (not `id`).
 
 ## API Module Layout
 
@@ -155,6 +162,15 @@ Each `doc.md` must include:
    - `prevCursor?: string`
    - `hasMore: boolean`
 4. Keep compatibility aliases only when already used by API consumers.
+
+## Shared Summary Conversion Rules
+
+When normalizing payloads, apply these mappings consistently:
+1. Any normalized tweet object must conform to `XTweetSummary`.
+2. Any normalized user object must conform to `XUserSummary`.
+3. Convert `legacy` relation booleans into `user.relationship`.
+4. Convert raw view-count branches into `stats.viewCount`.
+5. Convert quote-link fields into `quotedTweet` summary objects.
 
 ## Runtime Registration Rules
 

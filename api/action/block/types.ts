@@ -1,3 +1,5 @@
+import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * REST form fields used by blocks/create endpoint.
  */
@@ -65,17 +67,6 @@ export interface BlockResponse {
   __original: BlockOriginalResponse;
 }
 
-export interface BlockTargetUserSummary {
-  id?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-}
+export type BlockTargetUserSummary = XUserSummary;
 
-export interface BlockRelationshipSummary {
-  following?: boolean;
-  followedBy?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-}
+export type BlockRelationshipSummary = XUserRelationshipSummary;

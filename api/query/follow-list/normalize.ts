@@ -120,11 +120,13 @@ function extractUserSummary(entry: FollowListEntry): FollowListUserSummary | und
     friendsCount: user.legacy?.friends_count,
     verified: user.verification?.verified ?? user.legacy?.verified,
     protected: user.privacy?.protected ?? user.legacy?.protected,
-    followedBy: user.relationship_perspectives?.followed_by,
-    following: user.relationship_perspectives?.following,
-    blocking: user.relationship_perspectives?.blocking,
-    blockedBy: user.relationship_perspectives?.blocked_by,
-    muting: user.relationship_perspectives?.muting
+    relationship: {
+      followedBy: user.relationship_perspectives?.followed_by,
+      following: user.relationship_perspectives?.following,
+      blocking: user.relationship_perspectives?.blocking,
+      blockedBy: user.relationship_perspectives?.blocked_by,
+      muting: user.relationship_perspectives?.muting
+    }
   };
 }
 

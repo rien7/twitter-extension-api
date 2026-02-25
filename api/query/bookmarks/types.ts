@@ -1,3 +1,5 @@
+import type { XTweetSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * Bookmarks GraphQL operation name captured from live traffic.
  */
@@ -344,35 +346,6 @@ export interface BookmarksUserLegacy {
   [key: string]: unknown;
 }
 
-export interface BookmarksTweetSummary {
-  entryId: string;
-  sortIndex?: string;
-  tweetId?: string;
-  fullText?: string;
-  createdAt?: string;
-  language?: string;
-  source?: string;
-  conversationId?: string;
-  inReplyToTweetId?: string;
-  inReplyToUserId?: string;
-  viewCount?: string;
-  user?: {
-    userId?: string;
-    name?: string;
-    screenName?: string;
-    verified?: boolean;
-    profileImageUrl?: string;
-  };
-  stats: {
-    replyCount?: number;
-    retweetCount?: number;
-    likeCount?: number;
-    quoteCount?: number;
-    bookmarkCount?: number;
-  };
-  viewerState: {
-    bookmarked?: boolean;
-    favorited?: boolean;
-    retweeted?: boolean;
-  };
+export interface BookmarksTweetSummary extends XTweetSummary {
+  user?: XUserSummary;
 }

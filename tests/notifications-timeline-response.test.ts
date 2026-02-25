@@ -190,7 +190,7 @@ describe('notifications-timeline response normalization', () => {
     expect(response.notifications[0].targetTweetIds).toContain('42');
     expect(response.tweets).toHaveLength(1);
     expect(response.tweets[0].tweetId).toBe('42');
-    expect(response.tweets[0].stats.likeCount).toBe(3);
+    expect(response.tweets[0].stats?.likeCount).toBe(3);
     expect(response.cursorBottom).toBe('cursor-bottom-token');
     expect(response.nextCursor).toBe('cursor-bottom-token');
     expect(response.prevCursor).toBe('cursor-top-token');

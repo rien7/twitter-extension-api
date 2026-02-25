@@ -1,3 +1,5 @@
+import type { XUserSummary } from '../../../src/shared/types';
+
 /**
  * FollowList GraphQL operation name captured from live traffic.
  */
@@ -302,22 +304,4 @@ export interface FollowListUnknownTimelineUserResult {
   [key: string]: unknown;
 }
 
-export interface FollowListUserSummary {
-  entryId: string;
-  sortIndex?: string;
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-  location?: string;
-  profileImageUrl?: string;
-  followersCount?: number;
-  friendsCount?: number;
-  verified?: boolean;
-  protected?: boolean;
-  followedBy?: boolean;
-  following?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-}
+export type FollowListUserSummary = XUserSummary;

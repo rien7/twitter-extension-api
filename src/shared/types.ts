@@ -15,6 +15,64 @@ export interface XShapeNode {
   sample?: string | number | boolean | null;
 }
 
+export interface XUserRelationshipSummary {
+  following?: boolean;
+  followedBy?: boolean;
+  blocking?: boolean;
+  blockedBy?: boolean;
+  muting?: boolean;
+  wantRetweets?: boolean;
+}
+
+export interface XUserSummary {
+  entryId?: string;
+  sortIndex?: string;
+  userId?: string;
+  name?: string;
+  screenName?: string;
+  description?: string;
+  location?: string;
+  profileImageUrl?: string;
+  verified?: boolean;
+  protected?: boolean;
+  followersCount?: number;
+  friendsCount?: number;
+  relationship?: XUserRelationshipSummary;
+}
+
+export interface XTweetStats {
+  viewCount?: string;
+  replyCount?: number;
+  retweetCount?: number;
+  likeCount?: number;
+  quoteCount?: number;
+  bookmarkCount?: number;
+}
+
+export interface XTweetViewerState {
+  bookmarked?: boolean;
+  favorited?: boolean;
+  retweeted?: boolean;
+}
+
+export interface XTweetSummary {
+  entryId?: string;
+  sortIndex?: string;
+  tweetId?: string;
+  conversationId?: string;
+  fullText?: string;
+  createdAt?: string;
+  language?: string;
+  source?: string;
+  inReplyToTweetId?: string;
+  inReplyToUserId?: string;
+  inReplyToScreenName?: string;
+  quotedTweet?: XTweetSummary;
+  user?: XUserSummary;
+  stats?: XTweetStats;
+  viewerState?: XTweetViewerState;
+}
+
 export interface XApiMatchRule {
   method?: string;
   path?: string;

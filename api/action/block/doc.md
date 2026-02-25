@@ -42,7 +42,7 @@ Type name: `BlockResponse`
 ### Normalized top-level fields
 - `success`: `true` when server returns target user id and no REST errors.
 - `userId`: requested target id from input.
-- `targetUser`: summary (`id`, `name`, `screenName`, `description`).
+- `targetUser`: summary (`userId`, `name`, `screenName`, `description`, `relationship`).
 - `relationship`: follow/block/mute related booleans from server payload.
 - `errors`: REST error array when provided.
 - `__original`: full REST payload.
@@ -76,6 +76,6 @@ const response = await block({
 - Use normalized fields for business logic and `__original` for compatibility/debugging.
 
 ## Normalized response mapping
-- `targetUser` maps `id_str/name/screen_name`.
+- `targetUser.userId` maps from `id_str`.
 - `relationship` maps common relation booleans (`blocking`, `blocked_by`, `following`, ...).
 - `__original` keeps full server payload.

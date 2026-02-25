@@ -1,3 +1,9 @@
+import type {
+  XTweetSummary,
+  XTweetViewerState,
+  XUserSummary
+} from '../../../src/shared/types';
+
 /**
  * NotificationsTimeline GraphQL operation name captured from live traffic.
  */
@@ -441,13 +447,7 @@ export interface NotificationsTimelineTweetLegacy {
   [key: string]: unknown;
 }
 
-export interface NotificationsTimelineUserSummary {
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  verified?: boolean;
-  profileImageUrl?: string;
-}
+export type NotificationsTimelineUserSummary = XUserSummary;
 
 export interface NotificationsTimelineNotificationSummary {
   entryId: string;
@@ -463,29 +463,7 @@ export interface NotificationsTimelineNotificationSummary {
   targetTweetIds: string[];
 }
 
-export interface NotificationsTimelineTweetSummary {
-  entryId: string;
-  sortIndex?: string;
-  tweetId?: string;
-  fullText?: string;
-  createdAt?: string;
-  language?: string;
-  source?: string;
-  conversationId?: string;
-  inReplyToTweetId?: string;
-  inReplyToUserId?: string;
-  viewCount?: string;
+export interface NotificationsTimelineTweetSummary extends XTweetSummary {
   user?: NotificationsTimelineUserSummary;
-  stats: {
-    replyCount?: number;
-    retweetCount?: number;
-    likeCount?: number;
-    quoteCount?: number;
-    bookmarkCount?: number;
-  };
-  viewerState: {
-    bookmarked?: boolean;
-    favorited?: boolean;
-    retweeted?: boolean;
-  };
+  viewerState?: XTweetViewerState;
 }

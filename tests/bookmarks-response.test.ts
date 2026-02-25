@@ -100,7 +100,7 @@ describe('bookmarks response normalization', () => {
     expect(response.tweets).toHaveLength(1);
     expect(response.tweets[0].tweetId).toBe('42');
     expect(response.tweets[0].user?.screenName).toBe('alice');
-    expect(response.tweets[0].stats.likeCount).toBe(4);
+    expect(response.tweets[0].stats?.likeCount).toBe(4);
     expect(response.cursorBottom).toBe('cursor-bottom-token');
     expect(response.nextCursor).toBe('cursor-bottom-token');
     expect(response.prevCursor).toBeUndefined();

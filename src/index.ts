@@ -22,9 +22,14 @@ export type {
   XNamespace,
   XPaginateCursorApi,
   XShapeNode,
+  XTweetStats,
+  XTweetSummary,
+  XTweetViewerState,
   XUnknownApiInput,
   XUnknownApiRecord,
-  XUnknownApiStore
+  XUnknownApiStore,
+  XUserRelationshipSummary,
+  XUserSummary
 } from './shared/types';
 
 export {

@@ -67,7 +67,7 @@ Type name: `CreateTweetResponse`
 - `authorUserId`: created tweet author id.
 - `conversationId`: conversation id from `legacy.conversation_id_str`.
 - `inReplyToTweetId`, `inReplyToUserId`, `inReplyToScreenName`: reply linkage fields.
-- `quotedTweetId`: quoted source tweet id.
+- `quotedTweet`: quoted tweet summary (`XTweetSummary`), at least includes `tweetId` when available.
 - `errors`: GraphQL errors array when provided.
 - `__original`: full GraphQL payload.
 

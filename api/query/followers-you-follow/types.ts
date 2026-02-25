@@ -1,3 +1,5 @@
+import type { XUserSummary } from '../../../src/shared/types';
+
 /**
  * URL query params used by friends/following/list endpoint.
  */
@@ -100,24 +102,7 @@ export interface FollowersYouFollowOriginalResponse {
 /**
  * Normalized user summary for hover-card display.
  */
-export interface FollowersYouFollowUserSummary {
-  userId?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-  location?: string;
-  profileImageUrl?: string;
-  verified?: boolean;
-  protected?: boolean;
-  followersCount?: number;
-  friendsCount?: number;
-  following?: boolean;
-  followedBy?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-  wantRetweets?: boolean;
-}
+export type FollowersYouFollowUserSummary = XUserSummary;
 
 /**
  * Normalized SDK response for followers-you-follow query.

@@ -38,7 +38,7 @@ describe('follow response normalization', () => {
 
     expect(response.success).toBe(true);
     expect(response.userId).toBe('1526042174298550273');
-    expect(response.targetUser?.id).toBe('1526042174298550273');
+    expect(response.targetUser?.userId).toBe('1526042174298550273');
     expect(response.relationship.following).toBe(true);
     expect(response.__original).toEqual(rawPayload);
   });

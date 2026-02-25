@@ -1,3 +1,5 @@
+import type { XUserRelationshipSummary, XUserSummary } from '../../../src/shared/types';
+
 /**
  * REST form fields used by friendships/create endpoint.
  */
@@ -78,18 +80,6 @@ export interface FollowResponse {
   __original: FollowOriginalResponse;
 }
 
-export interface FollowTargetUserSummary {
-  id?: string;
-  name?: string;
-  screenName?: string;
-  description?: string;
-}
+export type FollowTargetUserSummary = XUserSummary;
 
-export interface FollowRelationshipSummary {
-  following?: boolean;
-  followedBy?: boolean;
-  blocking?: boolean;
-  blockedBy?: boolean;
-  muting?: boolean;
-  wantRetweets?: boolean;
-}
+export type FollowRelationshipSummary = XUserRelationshipSummary;
