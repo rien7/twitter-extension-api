@@ -1,22 +1,91 @@
 # Twitter Extension API SDK
 
-A reusable Twitter/X API SDK for browser extensions.
+Chinese version: [README.zh-CN.md](./README.zh-CN.md)
 
-This project focuses on:
-1. main-world network interception (`fetch` + `XHR`),
-2. unknown API contract capture to `window.x.__unknown_api`,
-3. typed, reusable APIs under `window.x.api.query/*` and `window.x.api.action/*`.
+A reusable SDK for `x.com / twitter.com` page context that standardizes:
+- page-world network interception,
+- unknown API discovery,
+- typed query/action wrappers,
+- cursor pagination helpers.
 
-## Why this exists
+## What this library does
 
-Many extension projects re-implement the same API layer repeatedly.
-This repository extracts that layer as a standalone SDK so plugin projects can share:
-1. interception,
-2. request replay conventions,
-3. typed API contracts,
-4. pagination helpers.
+1. Exposes built-in APIs under:
+- `window.x.api.query.*`
+- `window.x.api.action.*`
 
-`example-project` in this repo is a legacy reference for capture/replay behavior.
+2. Provides metadata on every callable API:
+- `__desc` (human-readable quick help)
+- `__default_params` (safe defaults snapshot)
+- `__meta` (matching + pagination metadata)
+
+3. Provides pagination helpers:
+- `window.x.paginateCursorApi`
+- `window.x.collectCursorPages`
+
+4. Optionally captures unknown traffic into:
+- `window.x.__unknown_api`
+
+## Scope and boundaries
+
+1. Browser-only runtime
+- Requires `window`, `document`, cookies, and page session context.
+
+2. Target domains
+- Intended for `https://x.com/*` and `https://twitter.com/*`.
+
+3. Session dependent
+- Most APIs require logged-in page session state.
+
+4. Not an official stable API
+- `queryId`, fields, and feature switches can change.
+
+5. No anti-bot bypass guarantees
+- This project does not bypass CAPTCHA, anti-bot checks, or platform policy controls.
+
+## XHR/fetch interception behavior
+
+Interception is controlled by `bootstrapTwitterExtensionApiSdk({ enableUnknownApiCapture })`.
+
+### Case A: `enableUnknownApiCapture: true`
+
+What happens:
+- Installs fetch/XHR interceptors in page world.
+- Captures unknown API records into `window.x.__unknown_api`.
+- Stores latest GraphQL request header templates from real page traffic.
+
+Result:
+- You can use unknown API discovery (`list()`, `toJSON()`), and replay behavior is closer to real page requests.
+
+### Case B: omitted or `enableUnknownApiCapture: false` (default)
+
+What happens:
+- No fetch/XHR interception is installed.
+- `window.x.__unknown_api` exists but will not auto-record traffic.
+
+Result:
+- Built-in APIs still work as normal wrappers.
+- No passive unknown API capture from page traffic.
+
+## Unknown API capture is OFF by default
+
+Default bootstrap does not capture unknown APIs:
+
+```ts
+import { bootstrapTwitterExtensionApiSdk } from 'twitter-extension-api-sdk';
+
+bootstrapTwitterExtensionApiSdk(); // capture disabled by default
+```
+
+Enable capture explicitly:
+
+```ts
+import { bootstrapTwitterExtensionApiSdk } from 'twitter-extension-api-sdk';
+
+bootstrapTwitterExtensionApiSdk({
+  enableUnknownApiCapture: true
+});
+```
 
 ## Install and build
 
@@ -27,128 +96,217 @@ pnpm test
 pnpm build
 ```
 
-## Runtime bootstrap
+## Usage options
 
-```ts
-import { bootstrapTwitterExtensionApiSdk } from './src';
+### 1) As a third-party npm library
 
-bootstrapTwitterExtensionApiSdk();
-```
-
-After bootstrap:
-
-```js
-window.x.__unknown_api.list();
-window.x.api.query.homeLatestTimeline.__desc;
-window.x.api.query.homeLatestTimeline.__default_params;
-window.x.api.query.homeLatestTimeline.__meta;
-```
-
-## Global runtime contract
-
-`window.x` provides:
-1. `window.x.api.query.<lowerCamelName>`
-2. `window.x.api.action.<lowerCamelName>`
-3. `window.x.__unknown_api`
-4. `window.x.paginateCursorApi`
-5. `window.x.collectCursorPages`
-6. `window.x.selfUserId` (if resolved from cookie `twid`)
-
-Important:
-1. APIs are grouped under `window.x.api`.
-2. `window.x.query` / `window.x.action` are not exposed.
-
-## API callable metadata
-
-Each callable API function has:
-1. `__desc: string`
-   - short plain-text quick help for normal users.
-   - reading `api.__desc` auto prints the description via `console.log`.
-2. `__default_params?: object`
-   - safe default request snapshot (when `default.ts` exists).
-3. `__meta: object`
-   - machine metadata for known-API matching and pagination.
-
-Example:
-
-```js
-const api = window.x.api.query.likes;
-
-console.log(api.__desc);
-console.log(api.__default_params);
-console.log(api.__meta.match);
-```
-
-## Request defaults and userId fallback
-
-For query APIs that require `userId` (for example `likes`, `userTweets`, `followList`):
-1. `input.userId` is optional.
-2. SDK reads cookie `twid` during bootstrap.
-3. `twid` is URL-encoded (`u%3D42`); only the numeric id is used.
-4. Priority is:
-   - explicit `input.userId`
-   - fallback self user id
-   - otherwise throw clear error.
-
-## Pagination helpers
-
-Cursor APIs expose `nextCursor`, `prevCursor`, `hasMore` and can be consumed with helpers:
-
-```js
-const firstPage = await window.x.api.query.likes({ count: 20 });
-
-const collected = await window.x.collectCursorPages(
-  window.x.api.query.likes,
-  { count: 20 },
-  {
-    maxPages: 3,
-    extractItems: (page) => page.tweets ?? []
-  }
-);
-```
-
-## API directory layout
-
-All APIs must follow:
-
-```txt
-api/<query|action>/<kebab-id>/
-  doc.md
-  types.ts
-  desc.ts
-  fetch.ts
-  normalize.ts
-  index.ts
-  default.ts        # required when stable defaults exist
-```
-
-## Adding a new API
-
-1. Export unknown records:
-
-```js
-window.x.__unknown_api.list();
-```
-
-2. Implement API files manually under `api/<scope>/<id>/` with required structure.
-3. Register exports in `api/index.ts`.
-4. Run validation:
+Install:
 
 ```bash
-pnpm tsc --noEmit
-pnpm test
-pnpm build
+npm i twitter-extension-api-sdk
 ```
 
-## Quality baseline
+Basic usage:
 
-1. Top-level request/response types must be explicit.
-2. `__desc` must be concise plain text.
-3. `doc.md` must be detailed (field meanings, errors, examples).
-4. Keep full original payload under `__original`.
-5. Never persist sensitive values (auth/cookie/csrf/token secrets).
+```ts
+import { bootstrapTwitterExtensionApiSdk } from 'twitter-extension-api-sdk';
 
-## Key documents
+bootstrapTwitterExtensionApiSdk();
 
-1. `AGENTS.md` — contributor + AI execution rules.
-2. `api/AI_GENERATE.md` — API generation policy.
+const page = await window.x.api.query.searchTimeline({
+  rawQuery: 'hello world',
+  product: 'Latest',
+  count: 20
+});
+
+console.log(page.tweets, page.nextCursor);
+```
+
+Recommended extension setup (WXT, MAIN world):
+
+```ts
+import { defineContentScript } from 'wxt/utils/define-content-script';
+import { bootstrapTwitterExtensionApiSdk } from 'twitter-extension-api-sdk';
+
+export default defineContentScript({
+  matches: ['*://x.com/*', '*://twitter.com/*'],
+  runAt: 'document_start',
+  world: 'MAIN',
+  main() {
+    bootstrapTwitterExtensionApiSdk({
+      enableUnknownApiCapture: true
+    });
+  }
+});
+```
+
+### 2) Via CDN
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js"></script>
+<script>
+  TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk();
+
+  window.x.api.query.searchTimeline({
+    rawQuery: 'hello world',
+    product: 'Top',
+    count: 20
+  }).then(console.log);
+</script>
+```
+
+IIFE global: `TwitterExtensionApiSdk`.
+
+### 3) In Tampermonkey
+
+Important: Tampermonkey sandbox is isolated from page main world. Inject into page world first.
+
+```javascript
+// ==UserScript==
+// @name         X API SDK Bootstrap
+// @namespace    local
+// @version      1.0.0
+// @match        https://x.com/*
+// @match        https://twitter.com/*
+// @run-at       document-start
+// @grant        unsafeWindow
+// ==/UserScript==
+
+(function () {
+  const sdkUrl = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js';
+
+  const sdkScript = document.createElement('script');
+  sdkScript.src = sdkUrl;
+  sdkScript.onload = () => {
+    const boot = document.createElement('script');
+    boot.textContent = `
+      window.TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk({
+        enableUnknownApiCapture: true
+      });
+    `;
+    document.documentElement.appendChild(boot);
+    boot.remove();
+  };
+
+  document.documentElement.appendChild(sdkScript);
+})();
+```
+
+### 4) From browser console
+
+If SDK is already present:
+
+```js
+window.x.api.query.homeLatestTimeline({ count: 20 });
+window.x.api.action.favoriteTweet({ tweetId: '42' });
+```
+
+If SDK is not present yet:
+
+```js
+await new Promise((resolve, reject) => {
+  const s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js';
+  s.onload = resolve;
+  s.onerror = reject;
+  document.documentElement.appendChild(s);
+});
+
+TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk({
+  enableUnknownApiCapture: true
+});
+```
+
+## Minimal end-to-end practical flow
+
+Search -> favorite -> unfavorite -> paginate.
+
+```js
+if (!window.x?.api?.query?.searchTimeline) {
+  TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk();
+}
+
+const first = await window.x.api.query.searchTimeline({
+  rawQuery: 'hello world',
+  product: 'Latest',
+  count: 20
+});
+
+const firstTweetId = first.tweets?.[0]?.tweetId;
+if (!firstTweetId) {
+  throw new Error('No tweetId found in first page');
+}
+
+await window.x.api.action.favoriteTweet({ tweetId: firstTweetId });
+await window.x.api.action.unfavoriteTweet({ tweetId: firstTweetId });
+
+if (first.nextCursor) {
+  const second = await window.x.api.query.searchTimeline({
+    rawQuery: 'hello world',
+    product: 'Latest',
+    count: 20,
+    cursor: first.nextCursor
+  });
+
+  console.log('second page tweet count:', second.tweets.length);
+}
+```
+
+## Built-in API catalog
+
+### Query APIs
+
+| API | Entry point | Required input | Purpose |
+|---|---|---|---|
+| `bookmarks` | `window.x.api.query.bookmarks(input?)` | none | current-account bookmark timeline |
+| `followList` | `window.x.api.query.followList(input?)` | none (`userId` falls back to `twid`) | following list for a user |
+| `followersYouFollow` | `window.x.api.query.followersYouFollow(input?)` | none (`userId` falls back to `twid`) | overlap users you follow who follow target |
+| `homeLatestTimeline` | `window.x.api.query.homeLatestTimeline(input?)` | none | home latest timeline |
+| `likes` | `window.x.api.query.likes(input?)` | none (`userId` falls back to `twid`) | liked tweets timeline |
+| `notificationsTimeline` | `window.x.api.query.notificationsTimeline(input?)` | none | notifications timeline |
+| `searchTimeline` | `window.x.api.query.searchTimeline(input)` | `rawQuery` | search across Top/Latest/People/Media/Lists |
+| `tweetDetail` | `window.x.api.query.tweetDetail(input)` | `detailId` | tweet detail thread |
+| `userByScreenName` | `window.x.api.query.userByScreenName(input)` | `screenName` | profile by screen name |
+| `userTweets` | `window.x.api.query.userTweets(input?)` | none (`userId` falls back to `twid`) | user tweet timeline |
+| `userTweetsAndReplies` | `window.x.api.query.userTweetsAndReplies(input?)` | none (`userId` falls back to `twid`) | user tweet+reply timeline |
+
+### Action APIs
+
+| API | Entry point | Required input | Purpose |
+|---|---|---|---|
+| `block` | `window.x.api.action.block(input)` | `userId` | block user |
+| `createBookmark` | `window.x.api.action.createBookmark(input)` | `tweetId` | add bookmark |
+| `createRetweet` | `window.x.api.action.createRetweet(input)` | `tweetId` | retweet |
+| `createTweet` | `window.x.api.action.createTweet(input)` | `tweetText` | create tweet (direct/reply/quote) |
+| `deleteBookmark` | `window.x.api.action.deleteBookmark(input)` | `tweetId` | remove bookmark |
+| `deleteRetweet` | `window.x.api.action.deleteRetweet(input)` | `tweetId` | undo retweet |
+| `deleteTweet` | `window.x.api.action.deleteTweet(input)` | `tweetId` | delete tweet |
+| `favoriteTweet` | `window.x.api.action.favoriteTweet(input)` | `tweetId` | like tweet |
+| `follow` | `window.x.api.action.follow(input)` | `userId` | follow user |
+| `grokTranslation` | `window.x.api.action.grokTranslation(input)` | `tweetId` | Grok translation |
+| `removeFollower` | `window.x.api.action.removeFollower(input)` | `targetUserId` | remove follower |
+| `unblock` | `window.x.api.action.unblock(input)` | `userId` | unblock user |
+| `unfavoriteTweet` | `window.x.api.action.unfavoriteTweet(input)` | `tweetId` | unlike tweet |
+| `unfollow` | `window.x.api.action.unfollow(input)` | `userId` | unfollow user |
+
+## Metadata and debugging
+
+```js
+const api = window.x.api.query.searchTimeline;
+
+api.__desc; // auto prints via console.log
+console.log(api.__default_params);
+console.log(api.__meta);
+```
+
+## Unknown API store usage
+
+```js
+window.x.__unknown_api.list();
+window.x.__unknown_api.toJSON(true);
+```
+
+## Key repo docs
+
+1. `AGENTS.md` - contributor and implementation constraints.
+2. `api/AI_GENERATE.md` - API generation policy.

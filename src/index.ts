@@ -85,7 +85,17 @@ export {
   userTweetsAndReplies
 } from '../api';
 
-export function bootstrapTwitterExtensionApiSdk() {
+export interface BootstrapTwitterExtensionApiSdkOptions {
+  /**
+   * Enable fetch/XHR interception and unknown API recording.
+   * Default is false.
+   */
+  enableUnknownApiCapture?: boolean;
+}
+
+export function bootstrapTwitterExtensionApiSdk(
+  options: BootstrapTwitterExtensionApiSdkOptions = {}
+) {
   if (typeof window === 'undefined') {
     throw new Error('bootstrapTwitterExtensionApiSdk can only run in browser context.');
   }
@@ -100,7 +110,9 @@ export function bootstrapTwitterExtensionApiSdk() {
   namespace.collectCursorPages = collectCursorPages;
   registerBuiltInApis(namespace.api);
   ensureUnknownApiStore(namespace);
-  installNetworkInterceptors({ namespace });
+  if (options.enableUnknownApiCapture) {
+    installNetworkInterceptors({ namespace });
+  }
 
   return namespace;
 }
