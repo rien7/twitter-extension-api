@@ -10,6 +10,7 @@ describe('api registry grouping', () => {
     expect(builtInQueryApis.followList).toBeDefined();
     expect(builtInQueryApis.followersYouFollow).toBeDefined();
     expect(builtInQueryApis.notificationsTimeline).toBeDefined();
+    expect(builtInQueryApis.searchTimeline).toBeDefined();
     expect(builtInQueryApis.userByScreenName).toBeDefined();
     expect(builtInActionApis.block).toBeDefined();
     expect(builtInActionApis.createBookmark).toBeDefined();
@@ -36,6 +37,7 @@ describe('api registry grouping', () => {
     expect(target.query.homeLatestTimeline).toBeDefined();
     expect(target.query.followersYouFollow).toBeDefined();
     expect(target.query.notificationsTimeline).toBeDefined();
+    expect(target.query.searchTimeline).toBeDefined();
     expect(target.query.userByScreenName).toBeDefined();
     expect(target.query['home-latest-timeline']).toBeUndefined();
     expect(target.action.block).toBeDefined();

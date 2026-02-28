@@ -75,6 +75,7 @@ export {
   homeLatestTimeline,
   likes,
   registerBuiltInApis,
+  searchTimeline,
   tweetDetail,
   userByScreenName,
   unfavoriteTweet,

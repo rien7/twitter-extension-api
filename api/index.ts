@@ -19,6 +19,7 @@ import { followersYouFollow } from './query/followers-you-follow';
 import { homeLatestTimeline } from './query/home-latest-timeline';
 import { likes } from './query/likes';
 import { notificationsTimeline } from './query/notifications-timeline';
+import { searchTimeline } from './query/search-timeline';
 import { tweetDetail } from './query/tweet-detail';
 import { userByScreenName } from './query/user-by-screenname';
 import { userTweets } from './query/user-tweets';
@@ -44,6 +45,7 @@ export { followersYouFollow } from './query/followers-you-follow';
 export { homeLatestTimeline } from './query/home-latest-timeline';
 export { likes } from './query/likes';
 export { notificationsTimeline } from './query/notifications-timeline';
+export { searchTimeline } from './query/search-timeline';
 export { tweetDetail } from './query/tweet-detail';
 export { userByScreenName } from './query/user-by-screenname';
 export { userTweets } from './query/user-tweets';
@@ -88,6 +90,8 @@ export * from './query/likes/default';
 export * from './query/likes/types';
 export * from './query/notifications-timeline/default';
 export * from './query/notifications-timeline/types';
+export * from './query/search-timeline/default';
+export * from './query/search-timeline/types';
 export * from './query/tweet-detail/default';
 export * from './query/tweet-detail/types';
 export * from './query/user-by-screenname/default';
@@ -102,6 +106,7 @@ export const builtInQueryApis: XApiRegistry = {
   homeLatestTimeline: homeLatestTimeline as XCallableApi<unknown, unknown>,
   likes: likes as XCallableApi<unknown, unknown>,
   notificationsTimeline: notificationsTimeline as XCallableApi<unknown, unknown>,
+  searchTimeline: searchTimeline as XCallableApi<unknown, unknown>,
   tweetDetail: tweetDetail as XCallableApi<unknown, unknown>,
   userByScreenName: userByScreenName as XCallableApi<unknown, unknown>,
   userTweets: userTweets as XCallableApi<unknown, unknown>,
