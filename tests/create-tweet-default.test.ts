@@ -66,6 +66,18 @@ describe('createTweet defaults', () => {
     expect(request.variables.attachment_url).toBeUndefined();
   });
 
+  it('maps mediaIds into media entities when mediaEntities is not provided', () => {
+    const request = buildCreateTweetRequest({
+      tweetText: 'with media',
+      mediaIds: ['1900000000000000001', '1900000000000000002']
+    });
+
+    expect(request.variables.media.media_entities).toEqual([
+      { media_id: '1900000000000000001', tagged_users: [] },
+      { media_id: '1900000000000000002', tagged_users: [] }
+    ]);
+  });
+
   it('rejects empty tweetText and missing mode-specific required fields', () => {
     expect(() => {
       buildCreateTweetRequest({
@@ -86,5 +98,12 @@ describe('createTweet defaults', () => {
         tweetText: 'missing reply target'
       } as unknown as Parameters<typeof buildCreateTweetRequest>[0]);
     }).toThrowError('create-tweet reply mode requires inReplyToTweetId');
+
+    expect(() => {
+      buildCreateTweetRequest({
+        tweetText: 'invalid media id',
+        mediaIds: ['']
+      });
+    }).toThrowError('create-tweet mediaIds[0] must be a non-empty string');
   });
 });

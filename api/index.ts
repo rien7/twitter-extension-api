@@ -10,6 +10,7 @@ import { favoriteTweet } from './action/favorite-tweet';
 import { follow } from './action/follow';
 import { grokTranslation } from './action/grok-translation';
 import { removeFollower } from './action/remove-follower';
+import { uploadImage } from './action/upload-image';
 import { unfavoriteTweet } from './action/unfavorite-tweet';
 import { unblock } from './action/unblock';
 import { unfollow } from './action/unfollow';
@@ -36,6 +37,7 @@ export { favoriteTweet } from './action/favorite-tweet';
 export { follow } from './action/follow';
 export { grokTranslation } from './action/grok-translation';
 export { removeFollower } from './action/remove-follower';
+export { uploadImage } from './action/upload-image';
 export { unfavoriteTweet } from './action/unfavorite-tweet';
 export { unblock } from './action/unblock';
 export { unfollow } from './action/unfollow';
@@ -72,6 +74,8 @@ export * from './action/grok-translation/default';
 export * from './action/grok-translation/types';
 export * from './action/remove-follower/default';
 export * from './action/remove-follower/types';
+export * from './action/upload-image/default';
+export * from './action/upload-image/types';
 export * from './action/unfavorite-tweet/default';
 export * from './action/unfavorite-tweet/types';
 export * from './action/unblock/default';
@@ -129,6 +133,7 @@ export const builtInActionApis: XApiRegistry = {
   unfollow: unfollow as XCallableApi<unknown, unknown>,
   unblock: unblock as XCallableApi<unknown, unknown>,
   removeFollower: removeFollower as XCallableApi<unknown, unknown>,
+  uploadImage: uploadImage as XCallableApi<unknown, unknown>,
   grokTranslation: grokTranslation as XCallableApi<unknown, unknown>
 };
 

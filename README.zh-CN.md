@@ -43,6 +43,9 @@ English version: [README.md](./README.md)
 5. 不提供绕风控能力
 - 不承诺绕过验证码、反爬或平台策略。
 
+6. 媒体上传边界
+- `uploadImage` 当前面向图片上传（`tweet_image`），不包含视频/GIF 的异步处理轮询流程。
+
 ## XHR/fetch 拦截行为
 
 拦截由 `bootstrapTwitterExtensionApiSdk({ enableUnknownApiCapture })` 控制。
@@ -217,7 +220,9 @@ TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk({
 });
 ```
 
-## 最小实战（搜索 -> 点赞 -> 取消点赞 -> 翻页）
+## 最小实战
+
+### 场景 A：搜索 -> 点赞 -> 取消点赞 -> 翻页
 
 ```js
 if (!window.x?.api?.query?.searchTimeline) {
@@ -250,6 +255,42 @@ if (first.nextCursor) {
 }
 ```
 
+### 场景 B：上传图片 -> 发推
+
+```js
+if (!window.x?.api?.action?.uploadImage) {
+  TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk();
+}
+
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.click();
+
+const file = await new Promise((resolve, reject) => {
+  input.onchange = () => {
+    const selected = input.files?.[0];
+    if (selected) resolve(selected);
+    else reject(new Error('未选择文件'));
+  };
+});
+
+const uploaded = await window.x.api.action.uploadImage({
+  file
+});
+
+if (!uploaded.mediaId) {
+  throw new Error('uploadImage 未返回 mediaId');
+}
+
+const tweet = await window.x.api.action.createTweet({
+  tweetText: '来自 SDK 的图片推文',
+  mediaIds: [uploaded.mediaId]
+});
+
+console.log(tweet.success, tweet.resultTweet?.tweetId);
+```
+
 ## 内置 API 清单
 
 ### Query APIs
@@ -276,6 +317,7 @@ if (first.nextCursor) {
 | `createBookmark` | `window.x.api.action.createBookmark(input)` | `tweetId` | 添加书签 |
 | `createRetweet` | `window.x.api.action.createRetweet(input)` | `tweetId` | 转推 |
 | `createTweet` | `window.x.api.action.createTweet(input)` | `tweetText` | 发推（普通/回复/引用） |
+| `uploadImage` | `window.x.api.action.uploadImage(input)` | `file` | 上传图片并返回 `mediaId` |
 | `deleteBookmark` | `window.x.api.action.deleteBookmark(input)` | `tweetId` | 删除书签 |
 | `deleteRetweet` | `window.x.api.action.deleteRetweet(input)` | `tweetId` | 取消转推 |
 | `deleteTweet` | `window.x.api.action.deleteTweet(input)` | `tweetId` | 删除推文 |

@@ -77,6 +77,8 @@ export interface CreateTweetFeatures {
   longform_notetweets_consumption_enabled?: boolean;
   responsive_web_twitter_article_tweet_consumption_enabled?: boolean;
   tweet_awards_web_tipping_enabled?: boolean;
+  content_disclosure_indicator_enabled?: boolean;
+  content_disclosure_ai_generated_indicator_enabled?: boolean;
   responsive_web_grok_show_grok_translated_post?: boolean;
   responsive_web_grok_analysis_button_from_backend?: boolean;
   post_ctas_fetch_enabled?: boolean;
@@ -117,6 +119,8 @@ export interface CreateTweetBaseRequest {
   darkRequest?: boolean;
   /** Convenience override for variables.media.media_entities. */
   mediaEntities?: CreateTweetMediaEntity[];
+  /** Convenience override for media ids, mapped to `media_entities: [{ media_id }]`. */
+  mediaIds?: string[];
   /** Convenience override for variables.media.possibly_sensitive. */
   possiblySensitive?: boolean;
   /** Convenience override for variables.semantic_annotation_ids. */

@@ -28,6 +28,7 @@ Type name: `CreateTweetRequest`
 - `tweetText`: Required text body. Mapped to `variables.tweet_text`.
 - `darkRequest`: Convenience override for `variables.dark_request`.
 - `mediaEntities`: Convenience override for `variables.media.media_entities`.
+- `mediaIds`: Convenience media id list mapped to `media_entities: [{ media_id }]`.
 - `possiblySensitive`: Convenience override for `variables.media.possibly_sensitive`.
 - `semanticAnnotationIds`: Convenience override for `variables.semantic_annotation_ids`.
 - `disallowedReplyOptions`: Convenience override for `variables.disallowed_reply_options`.
@@ -54,6 +55,10 @@ Type name: `CreateTweetRequest`
 3. explicit business fields (`tweetText`, mode-specific fields, convenience overrides).
 
 So mode-specific required fields always win over conflicting variable overrides.
+
+`mediaEntities` and `mediaIds` precedence:
+1. if `mediaEntities` is provided, it is used directly;
+2. else if `mediaIds` is provided, it is converted to `[{ media_id }]`.
 
 ## Response Type
 Type name: `CreateTweetResponse`
@@ -109,6 +114,22 @@ const response = await createTweet({
   mode: 'quote',
   tweetText: 'Context here.',
   quoteTweetId: '42'
+});
+```
+
+### Image upload + tweet
+
+```ts
+import { createTweet, uploadImage } from '../api';
+
+const uploaded = await uploadImage({ file });
+if (!uploaded.mediaId) {
+  throw new Error('upload-image did not return mediaId');
+}
+
+const response = await createTweet({
+  tweetText: 'Image post',
+  mediaIds: [uploaded.mediaId]
 });
 ```
 

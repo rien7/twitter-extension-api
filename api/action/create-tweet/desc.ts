@@ -22,6 +22,7 @@ export const CREATE_TWEET_DESC_TEXT = [
   '    - attachmentUrl (quote mode)',
   '    - quoteTweetId (quote mode)',
   '    - mediaEntities',
+  '    - mediaIds',
   '    - possiblySensitive',
   '    - semanticAnnotationIds',
   '    - disallowedReplyOptions',

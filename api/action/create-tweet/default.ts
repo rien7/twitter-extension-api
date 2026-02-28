@@ -10,7 +10,7 @@ import type {
   CreateTweetVariablesOverride
 } from './types';
 
-export const DEFAULT_CREATE_TWEET_QUERY_ID = 'nk8sb5Uu0l6zePyGJI_uYQ';
+export const DEFAULT_CREATE_TWEET_QUERY_ID = 'y362cgN7cwMppu6Hy3JzrQ';
 
 export const DEFAULT_CREATE_TWEET_OPERATION_NAME: CreateTweetOperationName = 'CreateTweet';
 
@@ -43,6 +43,8 @@ export const DEFAULT_CREATE_TWEET_FEATURES: CreateTweetFeatures = {
   longform_notetweets_consumption_enabled: true,
   responsive_web_twitter_article_tweet_consumption_enabled: true,
   tweet_awards_web_tipping_enabled: false,
+  content_disclosure_indicator_enabled: false,
+  content_disclosure_ai_generated_indicator_enabled: false,
   responsive_web_grok_show_grok_translated_post: false,
   responsive_web_grok_analysis_button_from_backend: true,
   post_ctas_fetch_enabled: true,
@@ -81,6 +83,8 @@ export function buildCreateTweetRequest(input: CreateTweetRequest): CreateTweetR
 
   if (input.mediaEntities !== undefined) {
     variables.media.media_entities = [...input.mediaEntities];
+  } else if (input.mediaIds !== undefined) {
+    variables.media.media_entities = buildMediaEntitiesFromIds(input.mediaIds);
   }
 
   if (input.possiblySensitive !== undefined) {
@@ -229,6 +233,20 @@ function isReplyRequest(input: CreateTweetRequest): input is CreateTweetReplyReq
 
 function isQuoteRequest(input: CreateTweetRequest): input is CreateTweetQuoteRequest {
   return input.mode === 'quote';
+}
+
+function buildMediaEntitiesFromIds(mediaIds: string[]): CreateTweetVariables['media']['media_entities'] {
+  return mediaIds.map((mediaId, index) => {
+    const normalizedMediaId = mediaId.trim();
+    if (!normalizedMediaId) {
+      throw new Error(`create-tweet mediaIds[${index}] must be a non-empty string`);
+    }
+
+    return {
+      media_id: normalizedMediaId,
+      tagged_users: []
+    };
+  });
 }
 
 function mergeCreateTweetVariables(

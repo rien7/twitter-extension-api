@@ -72,6 +72,7 @@ export {
   follow,
   followList,
   removeFollower,
+  uploadImage,
   homeLatestTimeline,
   likes,
   registerBuiltInApis,

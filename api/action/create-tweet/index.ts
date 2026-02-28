@@ -20,6 +20,11 @@ async function createTweetImpl(input: CreateTweetRequest): Promise<CreateTweetRe
  *   tweetText: 'hello world'
  * });
  *
+ * const imageTweet = await window.x.api.action.createTweet({
+ *   tweetText: 'with image',
+ *   mediaIds: ['1900000000000000001']
+ * });
+ *
  * const quote = await window.x.api.action.createTweet({
  *   mode: 'quote',
  *   tweetText: 'take a look',

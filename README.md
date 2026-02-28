@@ -43,6 +43,9 @@ A reusable SDK for `x.com / twitter.com` page context that standardizes:
 5. No anti-bot bypass guarantees
 - This project does not bypass CAPTCHA, anti-bot checks, or platform policy controls.
 
+6. Media upload scope
+- `uploadImage` is designed for image upload (`tweet_image`) and does not include video/gif async processing polling.
+
 ## XHR/fetch interception behavior
 
 Interception is controlled by `bootstrapTwitterExtensionApiSdk({ enableUnknownApiCapture })`.
@@ -217,9 +220,9 @@ TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk({
 });
 ```
 
-## Minimal end-to-end practical flow
+## Minimal end-to-end practical flows
 
-Search -> favorite -> unfavorite -> paginate.
+### Flow A: Search -> favorite -> unfavorite -> paginate
 
 ```js
 if (!window.x?.api?.query?.searchTimeline) {
@@ -252,6 +255,42 @@ if (first.nextCursor) {
 }
 ```
 
+### Flow B: Upload image -> create tweet
+
+```js
+if (!window.x?.api?.action?.uploadImage) {
+  TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk();
+}
+
+const input = document.createElement('input');
+input.type = 'file';
+input.accept = 'image/*';
+input.click();
+
+const file = await new Promise((resolve, reject) => {
+  input.onchange = () => {
+    const selected = input.files?.[0];
+    if (selected) resolve(selected);
+    else reject(new Error('No file selected'));
+  };
+});
+
+const uploaded = await window.x.api.action.uploadImage({
+  file
+});
+
+if (!uploaded.mediaId) {
+  throw new Error('uploadImage did not return mediaId');
+}
+
+const tweet = await window.x.api.action.createTweet({
+  tweetText: 'Image tweet from SDK',
+  mediaIds: [uploaded.mediaId]
+});
+
+console.log(tweet.success, tweet.resultTweet?.tweetId);
+```
+
 ## Built-in API catalog
 
 ### Query APIs
@@ -278,6 +317,7 @@ if (first.nextCursor) {
 | `createBookmark` | `window.x.api.action.createBookmark(input)` | `tweetId` | add bookmark |
 | `createRetweet` | `window.x.api.action.createRetweet(input)` | `tweetId` | retweet |
 | `createTweet` | `window.x.api.action.createTweet(input)` | `tweetText` | create tweet (direct/reply/quote) |
+| `uploadImage` | `window.x.api.action.uploadImage(input)` | `file` | upload image and return `mediaId` |
 | `deleteBookmark` | `window.x.api.action.deleteBookmark(input)` | `tweetId` | remove bookmark |
 | `deleteRetweet` | `window.x.api.action.deleteRetweet(input)` | `tweetId` | undo retweet |
 | `deleteTweet` | `window.x.api.action.deleteTweet(input)` | `tweetId` | delete tweet |

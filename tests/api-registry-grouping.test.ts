@@ -21,6 +21,7 @@ describe('api registry grouping', () => {
     expect(builtInActionApis.favoriteTweet).toBeDefined();
     expect(builtInActionApis.grokTranslation).toBeDefined();
     expect(builtInActionApis.removeFollower).toBeDefined();
+    expect(builtInActionApis.uploadImage).toBeDefined();
     expect(builtInActionApis.unfollow).toBeDefined();
     expect(builtInActionApis.unblock).toBeDefined();
   });
@@ -49,6 +50,7 @@ describe('api registry grouping', () => {
     expect(target.action.favoriteTweet).toBeDefined();
     expect(target.action.grokTranslation).toBeDefined();
     expect(target.action.removeFollower).toBeDefined();
+    expect(target.action.uploadImage).toBeDefined();
     expect(target.action.unfollow).toBeDefined();
   });
 });
