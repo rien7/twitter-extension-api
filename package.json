@@ -1,6 +1,6 @@
 {
   "name": "twitter-extension-api-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Twitter/X browser extension SDK for GraphQL interception and reusable API wrappers.",
   "keywords": [
     "twitter",
