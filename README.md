@@ -146,7 +146,7 @@ export default defineContentScript({
 ### 2) Via CDN
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@latest/dist/index.global.js"></script>
 <script>
   TwitterExtensionApiSdk.bootstrapTwitterExtensionApiSdk();
 
@@ -176,7 +176,7 @@ Important: Tampermonkey sandbox is isolated from page main world. Inject into pa
 // ==/UserScript==
 
 (function () {
-  const sdkUrl = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js';
+  const sdkUrl = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@latest/dist/index.global.js';
 
   const sdkScript = document.createElement('script');
   sdkScript.src = sdkUrl;
@@ -209,7 +209,7 @@ If SDK is not present yet:
 ```js
 await new Promise((resolve, reject) => {
   const s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@0.1.0/dist/index.global.js';
+  s.src = 'https://cdn.jsdelivr.net/npm/twitter-extension-api-sdk@latest/dist/index.global.js';
   s.onload = resolve;
   s.onerror = reject;
   document.documentElement.appendChild(s);
