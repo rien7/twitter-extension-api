@@ -2,8 +2,23 @@
   "name": "twitter-extension-api-sdk",
   "version": "0.1.0",
   "description": "Twitter/X browser extension SDK for GraphQL interception and reusable API wrappers.",
+  "keywords": [
+    "twitter",
+    "x",
+    "browser-extension",
+    "sdk",
+    "graphql"
+  ],
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rien7/twitter-extension-api.git"
+  },
+  "homepage": "https://github.com/rien7/twitter-extension-api#readme",
+  "bugs": {
+    "url": "https://github.com/rien7/twitter-extension-api/issues"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -26,7 +41,9 @@
     "build": "pnpm run build:ext && pnpm run build:lib",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "ci": "pnpm run typecheck && pnpm run test && pnpm run build:lib",
+    "prepublishOnly": "pnpm run ci"
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
@@ -39,5 +56,8 @@
   "packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d",
   "dependencies": {
     "x-client-transaction-id": "^0.1.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
